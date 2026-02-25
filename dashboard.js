@@ -315,8 +315,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initialize user profile
-    const userNameEl = document.querySelector('.user-name');
-    const userRoleEl = document.querySelector('.user-role'); // Adding potential support for a role element
+    const userNameEl = document.querySelector('.user-info h4');
+    const userRoleEl = document.querySelector('.user-info p');
     const storedUser = localStorage.getItem('agrovision-user');
     const storedRole = localStorage.getItem('agrovision-role');
 

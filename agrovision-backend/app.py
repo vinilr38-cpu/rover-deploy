@@ -8,7 +8,7 @@ import random
 from random import randint
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
 def init_db():
     conn = sqlite3.connect("sensor.db")
