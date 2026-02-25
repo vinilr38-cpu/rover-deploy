@@ -7,10 +7,15 @@ import os
 import random
 from random import randint
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='..', static_url_path='')
 
-# CORS: allow all origins (compatible — do NOT use supports_credentials with wildcard origin)
+# CORS: allow all origins
 CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+@app.route('/')
+def index():
+    """Serve the landing page."""
+    return app.send_static_file('index.html')
 
 # ─────────────────────────────────────────
 # Paths (always relative to this file)
