@@ -14,4 +14,4 @@ if __name__ == "__main__":
     append_log("INFO", "AgroVision backend starting via Waitress (Windowless)")
     from waitress import serve
     # No print statements here to avoid console issues on Windows
-    serve(app, host='0.0.0.0', port=5000)
+    serve(app, host='0.0.0.0', port=8080)
