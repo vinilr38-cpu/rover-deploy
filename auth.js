@@ -54,6 +54,16 @@ document.addEventListener('DOMContentLoaded', () => {
         input.parentElement.classList.remove('error');
     };
 
+    const getBaseUrl = () => {
+        const hostname = window.location.hostname;
+        if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '') {
+            return 'http://localhost:5000';
+        }
+        return `${window.location.protocol}//${hostname}:5000`;
+    };
+
+    const statusEl = document.getElementById('status');
+
     // Form Submission
     authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -83,39 +93,37 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isValid) {
             submitBtn.textContent = 'Processing...';
             submitBtn.disabled = true;
+            const baseUrl = getBaseUrl();
 
             if (currentMode === 'login') {
-                const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                    ? 'http://localhost:5000'
-                    : `${window.location.protocol}//${window.location.hostname}:5000`;
+                try {
+                    const response = await fetch(`${baseUrl}/api/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email: emailInput.value,
+                            password: passInput.value
+                        })
+                    });
 
-                fetch(`${baseUrl}/api/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: emailInput.value,
-                        password: passInput.value
-                    })
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            localStorage.setItem('agrovision-role', data.role);
-                            localStorage.setItem('agrovision-user', emailInput.value);
-                            alert(`Login successful! Redirecting to dashboard...`);
-                            window.location.href = 'dashboard.html';
-                        } else {
-                            alert('Login failed! Invalid email or password.');
-                            submitBtn.textContent = 'Login to System';
-                            submitBtn.disabled = false;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Login error:', error);
-                        alert('Connection failed! Please ensure the backend server is running and accessible.');
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        localStorage.setItem('agrovision-role', data.role);
+                        localStorage.setItem('agrovision-user', emailInput.value);
+                        alert(`Login successful! Redirecting to dashboard...`);
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        alert('Login failed! Invalid email or password.');
                         submitBtn.textContent = 'Login to System';
                         submitBtn.disabled = false;
-                    });
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    alert('Connection failed! Please ensure the backend server is running and accessible.');
+                    submitBtn.textContent = 'Login to System';
+                    submitBtn.disabled = false;
+                }
             } else {
                 // Real Signup via Backend
                 const roleInput = document.getElementById('role');
@@ -125,22 +133,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     role: roleInput ? roleInput.value : 'farmer'
                 };
 
-                const response = await fetch(`${baseUrl}/api/signup`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(signupData)
-                });
+                try {
+                    const response = await fetch(`${baseUrl}/api/signup`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(signupData)
+                    });
 
-                const data = await response.json();
+                    const data = await response.json();
 
-                if (data.status === 'success') {
-                    localStorage.setItem('agrovision-role', signupData.role);
-                    localStorage.setItem('agrovision-user', signupData.email);
+                    if (data.status === 'success') {
+                        localStorage.setItem('agrovision-role', signupData.role);
+                        localStorage.setItem('agrovision-user', signupData.email);
 
-                    alert('Registration successful! Redirecting to dashboard...');
-                    window.location.href = 'dashboard.html';
-                } else {
-                    statusEl.innerText = data.message || "Registration failed";
+                        alert('Registration successful! Redirecting to dashboard...');
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        if (statusEl) statusEl.innerText = data.message || "Registration failed";
+                        submitBtn.textContent = 'Register Now';
+                        submitBtn.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('Signup error:', error);
+                    if (statusEl) statusEl.innerText = "Connection failed!";
+                    submitBtn.textContent = 'Register Now';
+                    submitBtn.disabled = false;
                 }
             }
         }
