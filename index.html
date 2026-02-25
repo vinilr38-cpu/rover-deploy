@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroVision – Intelligent Pesticide Spraying & Monitoring System</title>
+    <meta name="description"
+        content="AI Powered Smart Farming Monitoring System - Intelligent Pesticide Spraying & Monitoring.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar container">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>AgroVision</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#workflow">How It Works</a></li>
+                <li><a href="login.html" class="btn btn-primary small">Login</a></li>
+            </ul>
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content container">
+                <div class="status-badge" id="system-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">System Online</span>
+                </div>
+                <h1>AgroVision</h1>
+                <p class="tagline">AI Powered Smart Farming Monitoring System</p>
+                <div class="hero-btns">
+                    <a href="login.html" class="btn btn-primary">Login Now</a>
+                    <a href="#about" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-overlay"></div>
+        </section>
+
+        <section id="about" class="about section">
+            <div class="container text-center">
+                <h2 class="section-title">About the System</h2>
+                <p class="section-desc">Our integrated platform leverages Raspberry Pi technology and advanced AI to
+                    revolutionize farm management. From pest detection to automated spraying, we provide a full-cycle
+                    solution for modern agriculture.</p>
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="icon-wrapper"><i class="fas fa-camera"></i></div>
+                        <h3>Camera Monitoring</h3>
+                        <p>High-resolution Raspberry Pi camera collects real-time visual data from the fields.</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="icon-wrapper"><i class="fas fa-brain"></i></div>
+                        <h3>AI Model</h3>
+                        <p>Sophisticated deep learning models detect pests with high accuracy in real-time.</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="icon-wrapper"><i class="fas fa-tint"></i></div>
+                        <h3>Spray System</h3>
+                        <p>Intelligent control system manages precise pesticide application only where needed.</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="icon-wrapper"><i class="fas fa-chart-line"></i></div>
+                        <h3>Dashboard</h3>
+                        <p>Complete analytics and remote control interface for seamless farm management.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features section bg-light">
+            <div class="container">
+                <h2 class="section-title text-center">System Features</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-video feature-icon"></i>
+                        <div class="feature-text">
+                            <h3>Live Camera Monitoring</h3>
+                            <p>Watch your farm from anywhere with encrypted live streams and automatic snapshot logging.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-bug feature-icon"></i>
+                        <div class="feature-text">
+                            <h3>Pest Detection Analytics</h3>
+                            <p>Identify specific pest types and monitor population trends through visual heatmaps.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-robot feature-icon"></i>
+                        <div class="feature-text">
+                            <h3>Automated Spray Control</h3>
+                            <p>Reduce chemical waste with targeted spraying triggered by AI detection results.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-bell feature-icon"></i>
+                        <div class="feature-text">
+                            <h3>Real-Time Alerts</h3>
+                            <p>Get instant notifications on your mobile device when critical issues are detected.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-history feature-icon"></i>
+                        <div class="feature-text">
+                            <h3>Data History & Reports</h3>
+                            <p>Access comprehensive historical data and export PDF reports for seasonal analysis.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow" class="workflow section">
+            <div class="container">
+                <h2 class="section-title text-center">How It Works</h2>
+                <div class="flow-container">
+                    <div class="flow-card">
+                        <div class="flow-number">1</div>
+                        <h3>Capture</h3>
+                        <p>The IoT nodes capture high-quality images using wide-angle lenses across the farm.</p>
+                    </div>
+                    <div class="flow-card">
+                        <div class="flow-number">2</div>
+                        <h3>Detect</h3>
+                        <p>Our Edge AI processing unit runs computer vision models to scan for specific pest signatures.
+                        </p>
+                    </div>
+                    <div class="flow-card">
+                        <div class="flow-number">3</div>
+                        <h3>Analyze</h3>
+                        <p>The system evaluates the severity and determines if local or broad intervention is required.
+                        </p>
+                    </div>
+                    <div class="flow-card">
+                        <div class="flow-number">4</div>
+                        <h3>Spray</h3>
+                        <p>Precision actuators deploy the precise amount of pesticide to the affected areas instantly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-info">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>AgroVision</span>
+                </div>
+                <p>Innovative technology for sustainable and efficient agricultural practices.</p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-envelope"></i> info@agrovision.com</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-map-marker-alt"></i> Tech Agro Hub, Bangalore, India</p>
+            </div>
+            <div class="footer-about">
+                <h4>About Us</h4>
+                <p>We are a team of engineers dedicated to solving agricultural challenges using IoT and Artificial
+                    Intelligence.</p>
+                <a href="#" class="link">Read our story</a>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2026 AgroVision. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

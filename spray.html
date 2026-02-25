@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spray System - AgroVision</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <style>
+        .spray-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spray-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .large-btn {
+            padding: 50px 20px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-activate {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn-activate:hover {
+            background: #1b5e20;
+            transform: translateY(-5px);
+        }
+
+        .btn-deactivate {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-deactivate:hover {
+            background: #d32f2f;
+            transform: translateY(-5px);
+        }
+
+        .status-badge {
+            margin-top: 30px;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+    <aside class="sidebar">
+        <!-- Reusing sidebar structure -->
+        <div class="sidebar-header">
+            <div class="logo"><i class="fas fa-leaf"></i><span>AgroVision</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                <li class="active"><a href="control.html"><i class="fas fa-spray-can"></i> Spray Control</a></li>
+                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+        <header class="dashboard-header">
+            <h2>Spray Control Module</h2>
+        </header>
+
+        <main class="spray-container">
+            <h1>System Node Control</h1>
+            <p>Direct manual override for the pesticide delivery system.</p>
+
+            <div class="spray-controls">
+                <button class="large-btn btn-activate" onclick="controlSpray('ON')">
+                    <i class="fas fa-play"></i><br>ACTIVATE
+                </button>
+                <button class="large-btn btn-deactivate" onclick="controlSpray('OFF')">
+                    <i class="fas fa-stop"></i><br>DEACTIVATE
+                </button>
+            </div>
+
+            <div id="spray-status-indicator" class="status-badge" style="background: #eee; color: #666;">
+                NODE STATE: <span id="node-state">FETCHING...</span>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function controlSpray(status) {
+            try {
+                const baseUrl = `http://${window.location.hostname || 'localhost'}:5000`;
+                const response = await fetch(`${baseUrl}/api/spray`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: status })
+                });
+                const data = await response.json();
+                alert("Spray turned " + status);
+                updateUIState(status);
+            } catch (error) {
+                console.error("Error controlling spray:", error);
+                alert("Connection failed. Check if backend is running.");
+            }
+        }
+
+        async function fetchStatus() {
+            try {
+                const baseUrl = `http://${window.location.hostname || 'localhost'}:5000`;
+                const response = await fetch(`${baseUrl}/api/data`);
+                const data = await response.json();
+                updateUIState(data.spray_status);
+            } catch (error) {
+                console.error("Error fetching status:", error);
+            }
+        }
+
+        function updateUIState(status) {
+            const indicator = document.getElementById("spray-status-indicator");
+            const text = document.getElementById("node-state");
+            text.innerText = status;
+            if (status === 'ON') {
+                indicator.style.background = '#e8f5e9';
+                indicator.style.color = '#2e7d32';
+                text.innerText = 'ACTIVE';
+            } else {
+                indicator.style.background = '#ffebee';
+                indicator.style.color = '#c62828';
+                text.innerText = 'IDLE';
+            }
+        }
+
+        setInterval(fetchStatus, 3000);
+        fetchStatus();
+    </script>
+</body>
+
+</html>

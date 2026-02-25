@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data History - AgroVision</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <style>
+        .history-controls {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+            outline: none;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-group input[type="date"] {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: inherit;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .action-btn:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+        }
+
+        .btn-csv {
+            color: #2e7d32;
+            border-color: #c8e6c9;
+        }
+
+        .btn-csv:hover {
+            background: #e8f5e9;
+        }
+
+        .btn-pdf {
+            color: #d32f2f;
+            border-color: #ffcdd2;
+        }
+
+        .btn-pdf:hover {
+            background: #ffebee;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .history-table th {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            border-bottom: 2px solid #eee;
+        }
+
+        .history-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            color: #444;
+            font-size: 0.95rem;
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .history-table tr:hover {
+            background: #fcfdfc;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-positive {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-negative {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .badge-info {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+
+        .page-info {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .page-ctrls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .page-btn {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .page-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-btn:hover:not(.active) {
+            background: #eee;
+        }
+
+        @media (max-width: 992px) {
+            .table-container {
+                overflow-x: auto;
+            }
+
+            .history-table {
+                min-width: 800px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .history-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>AgroVision</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> About Project</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                <li><a href="camera.html"><i class="fas fa-video"></i> Live Camera</a></li>
+                <li><a href="control.html"><i class="fas fa-spray-can"></i> Spray Control</a></li>
+                <li><a href="analytics.html"><i class="fas fa-chart-pie"></i> Analytics</a></li>
+                <li class="active"><a href="history.html"><i class="fas fa-history"></i> Data History</a></li>
+                <li><a href="logs.html"><i class="fas fa-terminal"></i> System Logs</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="help.html"><i class="fas fa-question-circle"></i> Help</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h2>Data History Archive</h2>
+            </div>
+            <div class="header-right">
+                <div class="farm-select-container">
+                    <select id="farm-selector">
+                        <option value="farm-north">Farm North: Block A</option>
+                        <option value="farm-south">Farm South: Block B</option>
+                        <option value="farm-east">Farm East: Block C</option>
+                    </select>
+                </div>
+
+                <div id="theme-toggle" class="header-icon theme-toggle-btn">
+                    <i class="fas fa-moon"></i>
+                </div>
+
+                <div class="notification-container">
+                    <div id="notification-btn" class="header-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div id="notification-dropdown" class="notification-dropdown">
+                        <div class="dropdown-header">
+                            <h5>Notifications</h5>
+                            <span class="view-all">Mark as read</span>
+                        </div>
+                        <ul class="notification-list">
+                            <li class="notification-item">
+                                <i class="fas fa-bug" style="color: #f44336; background: rgba(244, 67, 54, 0.1);"></i>
+                                <div class="notif-text">
+                                    <b>High Pest Intensity!</b>
+                                    <span>Block A region detected 42 Aphids.</span>
+                                    <span class="time">2 mins ago</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="user-profile">
+                    <span class="user-name">Farmer Vinil</span>
+                    <div class="user-avatar"><i class="fas fa-user"></i></div>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-widgets" style="padding: 0;">
+            <div class="history-controls">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="history-search" placeholder="Search by pest type or date...">
+                </div>
+                <div class="filter-group">
+                    <input type="date" value="2026-02-01">
+                    <span>to</span>
+                    <input type="date" value="2026-02-22">
+                </div>
+                <div class="action-btns">
+                    <button class="action-btn btn-csv" onclick="alert('Downloading CSV...')">
+                        <i class="fas fa-file-csv"></i> CSV
+                    </button>
+                    <button class="action-btn btn-pdf" onclick="alert('Exporting PDF...')">
+                        <i class="fas fa-file-pdf"></i> PDF
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="history-table" id="data-history-table">
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Pest Detected</th>
+                            <th>Confidence</th>
+                            <th>Spray Activated</th>
+                            <th>Temp (°C)</th>
+                            <th>Humidity (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-body">
+                        <!-- Data will be injected by JS -->
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <div class="page-info">Showing 1 to 10 of 42 entries</div>
+                    <div class="page-ctrls">
+                        <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="history.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+
+</html>
