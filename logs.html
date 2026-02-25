@@ -4,103 +4,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Logs - AgroVision</title>
+    <title>Edge Terminal - AgroVision</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
     <style>
-        .log-container {
-            background: #1e1e1e;
-            color: #00ff00;
-            font-family: 'Courier New', Courier, monospace;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            border: 1px solid #333;
-            max-height: 700px;
-            overflow-y: auto;
-            margin-bottom: 30px;
-        }
-
-        .log-entry {
-            margin-bottom: 8px;
-            font-size: 0.95rem;
+        .terminal-window {
+            background: #0d110f;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
             display: flex;
-            gap: 15px;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+            height: calc(100vh - 250px);
+            min-height: 500px;
         }
 
-        .log-time {
-            color: #888;
+        .terminal-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red {
+            background: #ff5f56;
+        }
+
+        .dot-yellow {
+            background: #ffbd2e;
+        }
+
+        .dot-green {
+            background: #27c93f;
+        }
+
+        .terminal-body {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #a1b0a8;
+        }
+
+        .log-line {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 8px;
+            animation: log-fade-in 0.3s ease-out;
+        }
+
+        @keyframes log-fade-in {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .log-ts {
+            color: #5c6b62;
+            white-space: nowrap;
+        }
+
+        .log-lvl {
+            font-weight: 700;
+            text-transform: uppercase;
+            width: 70px;
             flex-shrink: 0;
         }
 
-        .log-type {
-            font-weight: bold;
-            width: 80px;
-            flex-shrink: 0;
+        .lvl-info {
+            color: var(--info);
+        }
+
+        .lvl-warn {
+            color: var(--warning);
+        }
+
+        .lvl-error {
+            color: var(--danger);
+        }
+
+        .lvl-success {
+            color: var(--success);
         }
 
         .log-msg {
-            word-break: break-all;
+            color: #e2e8f0;
         }
 
-        .type-info {
-            color: #2196f3;
-        }
-
-        .type-warn {
-            color: #ffa000;
-        }
-
-        .type-error {
-            color: #f44336;
-        }
-
-        .type-success {
-            color: #4caf50;
-        }
-
-        .log-controls {
+        .terminal-footer {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 15px 25px;
             display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .log-filter-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: #5c6b62;
         }
 
-        .log-filter-btn:hover,
-        .log-filter-btn.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
+        .pulse-green {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--success);
+            animation: glow 2s infinite;
         }
 
-        .clear-logs {
-            margin-left: auto;
-            color: #f44336;
-            background: rgba(244, 67, 54, 0.1);
-            border: 1px solid rgba(244, 67, 54, 0.2);
-        }
+        @keyframes glow {
 
-        .clear-logs:hover {
-            background: #f44336;
-            color: white;
-        }
+            0%,
+            100% {
+                opacity: 1;
+            }
 
-        body.dark-mode .log-container {
-            background: #000;
+            50% {
+                opacity: 0.4;
+            }
         }
     </style>
 </head>
@@ -109,101 +165,106 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <i class="fas fa-leaf"></i>
                 <span>AgroVision</span>
-            </div>
+            </a>
         </div>
         <nav class="sidebar-nav">
             <ul>
-                <li><a href="about.html"><i class="fas fa-info-circle"></i> About Project</a></li>
-                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li><a href="camera.html"><i class="fas fa-video"></i> Live Camera</a></li>
-                <li><a href="control.html"><i class="fas fa-spray-can"></i> Spray Control</a></li>
-                <li><a href="analytics.html"><i class="fas fa-chart-pie"></i> Analytics</a></li>
-                <li><a href="history.html"><i class="fas fa-history"></i> Data History</a></li>
-                <li class="active"><a href="logs.html"><i class="fas fa-terminal"></i> System Logs</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> <span>Insights</span></a></li>
+                <li><a href="camera.html"><i class="fas fa-video"></i> <span>Live Vision</span></a></li>
+                <li><a href="control.html"><i class="fas fa-spray-can"></i> <span>System Controls</span></a></li>
+                <li><a href="analytics.html"><i class="fas fa-chart-pie"></i> <span>Health Analytics</span></a></li>
+                <li><a href="history.html"><i class="fas fa-history"></i> <span>Data Archive</span></a></li>
+                <li class="active"><a href="logs.html"><i class="fas fa-terminal"></i> <span>System Logs</span></a></li>
                 <li class="nav-divider"></li>
-                <li><a href="help.html"><i class="fas fa-question-circle"></i> Help</a></li>
-                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
-                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> <span>About Project</span></a></li>
+                <li><a href="help.html"><i class="fas fa-question-circle"></i> <span>Documentation</span></a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> <span>Support</span></a></li>
+                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> <span>Leave
+                            Dashboard</span></a></li>
             </ul>
         </nav>
     </aside>
 
+    <!-- Main Content -->
     <div class="main-content">
         <header class="dashboard-header">
             <div class="header-left">
-                <div class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <h2>Internal System Logs</h2>
+                <h2>Edge Node Terminal</h2>
             </div>
             <div class="header-right">
-                <div class="farm-select-container">
-                    <select id="farm-selector">
-                        <option value="farm-north">Farm North: Block A</option>
-                        <option value="farm-south">Farm South: Block B</option>
-                        <option value="farm-east">Farm East: Block C</option>
-                    </select>
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search analytics or logs...">
                 </div>
 
-                <div id="theme-toggle" class="header-icon theme-toggle-btn">
+                <div class="icon-btn theme-toggle-btn" id="theme-toggle">
                     <i class="fas fa-moon"></i>
                 </div>
 
-                <div class="notification-container">
-                    <div id="notification-btn" class="header-icon">
+                <div class="notification-badge">
+                    <div class="icon-btn" id="notification-btn">
                         <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </div>
-                    <div id="notification-dropdown" class="notification-dropdown">
-                        <div class="dropdown-header">
-                            <h5>Notifications</h5>
-                            <span class="view-all">Mark as read</span>
-                        </div>
-                        <ul class="notification-list">
-                            <li class="notification-item">
-                                <i class="fas fa-bug" style="color: #f44336; background: rgba(244, 67, 54, 0.1);"></i>
-                                <div class="notif-text">
-                                    <b>High Pest Intensity!</b>
-                                    <span>Block A region detected 42 Aphids.</span>
-                                    <span class="time">2 mins ago</span>
-                                </div>
-                            </li>
-                        </ul>
                     </div>
                 </div>
 
                 <div class="user-profile">
-                    <span class="user-name">Admin Vinil</span>
-                    <div class="user-avatar"><i class="fas fa-user-shield"></i></div>
+                    <div class="user-avatar">V</div>
+                    <span class="user-name">Farmer Vinil</span>
                 </div>
             </div>
         </header>
 
-        <main class="dashboard-widgets" style="padding: 0;">
-            <div class="log-controls">
-                <button class="log-filter-btn active">All Events</button>
-                <button class="log-filter-btn">Security</button>
-                <button class="log-filter-btn">AI Debug</button>
-                <button class="log-filter-btn">Hardware</button>
-                <button class="log-filter-btn clear-logs"
-                    onclick="confirm('Are you sure you want to clear system logs?')">Clear Logs</button>
+        <div style="display: flex; gap: 15px; margin-bottom: 25px;">
+            <button class="btn btn-secondary small"
+                onclick="alert('Filtering for security events...')">Security</button>
+            <button class="btn btn-secondary small" onclick="alert('Filtering for AI inference...')">AI
+                Inference</button>
+            <button class="btn btn-secondary small"
+                onclick="alert('Filtering for hardware status...')">Hardware</button>
+            <button class="btn btn-glass small" style="margin-left: auto; color: var(--danger);"
+                onclick="confirm('Purge system log buffer?')">Clear Buffer</button>
+        </div>
+
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <div class="dot dot-red"></div>
+                    <div class="dot dot-yellow"></div>
+                    <div class="dot dot-green"></div>
+                </div>
+                <span style="font-size: 0.8rem; color: #5c6b62; font-family: 'JetBrains Mono';">pi@agrovision-node-01:
+                    /var/log/agrovision.log</span>
+                <i class="fas fa-search" style="color: #5c6b62; font-size: 0.8rem;"></i>
             </div>
 
-            <div class="log-container" id="log-terminal">
-                <!-- Log entries will be injected here -->
+            <div class="terminal-body" id="log-terminal">
+                <!-- Log streams handled by logs.js -->
             </div>
 
-            <div class="academic-section"
-                style="background: var(--card-bg); border-radius: 15px; padding: 25px; border: 1px solid var(--border-color);">
-                <h3><i class="fas fa-file-alt"></i> Log Interpretation Guide</h3>
-                <p style="color: var(--text-light);">These logs provide real-time status updates from the Raspberry Pi
-                    edge device. Codes like <code>PI_HW_GPIO_21</code> refer to specific sensor pins, while
-                    <code>AI_INF_RES</code> indicates inference results from the TensorFlow model.</p>
+            <div class="terminal-footer">
+                <div class="status-pill">
+                    <div class="pulse-green"></div>
+                    LIVE TAIL ACTIVE
+                </div>
+                <div class="status-pill">
+                    <i class="fas fa-microchip"></i> CPU: 14% | RAM: 2.1GB/4GB
+                </div>
             </div>
-        </main>
+        </div>
+
+        <div class="widget-card" style="margin-top: 30px;">
+            <div class="widget-header">
+                <h3>Log Interpretation Schema</h3>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-light); line-height: 1.6;">
+                Node events are classified by severity. <strong>AI_INF</strong> tags represent model output confidence.
+                <strong>GPIO_INT</strong> signals indicate physical actuator feedback. For deep troubleshooting,
+                access the SSH tunnel via the system documentation.
+            </p>
+        </div>
     </div>
 
     <script src="logs.js"></script>

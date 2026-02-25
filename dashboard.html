@@ -4,10 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - AgroVision</title>
+    <title>AgroVision Dashboard – Intelligence Room</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
@@ -18,290 +22,188 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <i class="fas fa-leaf"></i>
                 <span>AgroVision</span>
-            </div>
+            </a>
         </div>
         <nav class="sidebar-nav">
             <ul>
-                <li><a href="about.html"><i class="fas fa-info-circle"></i> About Project</a></li>
-                <li class="active"><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li><a href="camera.html"><i class="fas fa-video"></i> Live Camera</a></li>
-                <li><a href="control.html"><i class="fas fa-spray-can"></i> Spray Control</a></li>
-                <li><a href="analytics.html"><i class="fas fa-chart-pie"></i> Analytics</a></li>
-                <li><a href="history.html"><i class="fas fa-history"></i> Data History</a></li>
-                <li><a href="logs.html"><i class="fas fa-terminal"></i> System Logs</a></li>
+                <li class="active"><a href="dashboard.html"><i class="fas fa-th-large"></i> <span>Insights</span></a>
+                </li>
+                <li><a href="camera.html"><i class="fas fa-video"></i> <span>Live Vision</span></a></li>
+                <li><a href="control.html"><i class="fas fa-spray-can"></i> <span>System Controls</span></a></li>
+                <li><a href="analytics.html"><i class="fas fa-chart-pie"></i> <span>Health Analytics</span></a></li>
+                <li><a href="history.html"><i class="fas fa-history"></i> <span>Data Archive</span></a></li>
+                <li><a href="logs.html"><i class="fas fa-terminal"></i> <span>System Logs</span></a></li>
                 <li class="nav-divider"></li>
-                <li><a href="help.html"><i class="fas fa-question-circle"></i> Help</a></li>
-                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
-                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> <span>About Project</span></a></li>
+                <li><a href="help.html"><i class="fas fa-question-circle"></i> <span>Documentation</span></a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> <span>Support</span></a></li>
+                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> <span>Leave
+                            Dashboard</span></a></li>
             </ul>
         </nav>
     </aside>
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Top Header -->
+        <!-- Dashboard Header -->
         <header class="dashboard-header">
             <div class="header-left">
-                <div class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <h2>Overview</h2>
+                <h2>Operational Insights</h2>
             </div>
+
             <div class="header-right">
-                <div class="farm-select-container">
-                    <select id="farm-selector">
-                        <option value="farm-north">Farm North: Block A</option>
-                        <option value="farm-south">Farm South: Block B</option>
-                        <option value="farm-east">Farm East: Block C</option>
-                    </select>
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search analytics or logs...">
                 </div>
 
-                <div class="header-status-group">
-                    <div class="pi-status-container" title="Raspberry Pi Connection">
-                        <div id="pi-status-dot" class="pi-status-dot"></div>
-                        <span id="status" class="pi-status-text">Pi Connected</span>
-                    </div>
-                    <div class="pi-status-container" title="Camera Health">
-                        <div id="camera-status-dot" class="pi-status-dot"
-                            style="background-color: #4caf50; box-shadow: 0 0 5px #4caf50;"></div>
-                        <span id="camera-status-text" class="pi-status-text">Camera Active</span>
-                    </div>
-                    <div class="pi-status-container" title="AI Model Health">
-                        <div id="model-status-dot" class="pi-status-dot"
-                            style="background-color: #4caf50; box-shadow: 0 0 5px #4caf50;"></div>
-                        <span id="model-status-text" class="pi-status-text">Model Ready</span>
-                    </div>
-                </div>
-
-                <div id="theme-toggle" class="header-icon theme-toggle-btn">
+                <div class="icon-btn theme-toggle-btn" id="theme-toggle">
                     <i class="fas fa-moon"></i>
                 </div>
 
-                <div class="notification-container">
-                    <div id="notification-btn" class="header-icon">
+                <div class="notification-badge">
+                    <div class="icon-btn" id="notification-btn">
                         <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </div>
-                    <div id="notification-dropdown" class="notification-dropdown">
-                        <div class="dropdown-header">
-                            <h5>Notifications</h5>
-                            <span class="view-all">Mark as read</span>
-                        </div>
-                        <ul class="notification-list">
-                            <li class="notification-item">
-                                <i class="fas fa-bug" style="color: #f44336; background: rgba(244, 67, 54, 0.1);"></i>
-                                <div class="notif-text">
-                                    <b>High Pest Intensity!</b>
-                                    <span>Block A region detected 42 Aphids.</span>
-                                    <span class="time">2 mins ago</span>
-                                </div>
-                            </li>
-                            <li class="notification-item">
-                                <i class="fas fa-spray-can"
-                                    style="color: #4caf50; background: rgba(76, 175, 80, 0.1);"></i>
-                                <div class="notif-text">
-                                    <b>Spray Completed</b>
-                                    <span>Automated spray cycle finished successfully.</span>
-                                    <span class="time">15 mins ago</span>
-                                </div>
-                            </li>
-                            <li class="notification-item">
-                                <i class="fas fa-info-circle"
-                                    style="color: #2196f3; background: rgba(33, 150, 243, 0.1);"></i>
-                                <div class="notif-text">
-                                    <b>System Update</b>
-                                    <span>Edge node firmware updated to v1.2.</span>
-                                    <span class="time">1 hour ago</span>
-                                </div>
-                            </li>
-                        </ul>
                     </div>
                 </div>
 
                 <div class="user-profile">
+                    <div class="user-avatar">V</div>
                     <span class="user-name">Farmer Vinil</span>
-                    <div class="user-avatar"><i class="fas fa-user"></i></div>
                 </div>
             </div>
         </header>
 
-        <!-- Connectivity UI -->
+        <!-- Overlay Alerts -->
         <div id="loading-overlay" class="loading-spinner-overlay">
             <div class="spinner"></div>
         </div>
         <div id="connection-warning" class="connection-warning">
-            <i class="fas fa-exclamation-triangle"></i>
-            Connection Lost. Trying to reconnect...
+            <i class="fas fa-wifi-slash"></i>
+            Backend Node Offline. Reconnecting...
         </div>
 
-        <!-- Dashboard Widgets -->
-        <main class="dashboard-widgets">
-            <div class="welcome-banner">
-                <div class="welcome-text">
-                    <h1>Good Afternoon, Vinil!</h1>
-                    <p>Your farm monitoring system is running smoothly. No critical pests detected today.</p>
-                    <div class="welcome-actions">
-                        <div class="last-updated-tag">
-                            <i class="fas fa-clock"></i> Last Updated: <span id="last-updated">Just now</span>
-                        </div>
-                        <button id="download-report-btn" class="btn btn-primary small">
-                            <i class="fas fa-file-download"></i> Download Report
-                        </button>
+        <!-- High-Level Stats -->
+        <div class="stats-grid">
+            <div class="stat-card primary-card">
+                <div class="stat-icon"><i class="fas fa-thermometer-half"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Temperature</span>
+                    <h3 class="stat-value"><span id="temp">--</span>°C</h3>
+                    <div class="stat-change up"><i class="fas fa-caret-up"></i> 0.5%</div>
+                </div>
+            </div>
+            <div class="stat-card info-card">
+                <div class="stat-icon"><i class="fas fa-tint"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Humidity</span>
+                    <h3 class="stat-value"><span id="humidity">--</span>%</h3>
+                    <div class="stat-change down"><i class="fas fa-caret-down"></i> 1.2%</div>
+                </div>
+            </div>
+            <div class="stat-card accent-card">
+                <div class="stat-icon"><i class="fas fa-seedling"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Soil Moisture</span>
+                    <h3 class="stat-value"><span id="soil">--</span>%</h3>
+                    <div class="stat-change up"><i class="fas fa-check"></i> Optimal</div>
+                </div>
+            </div>
+            <div class="stat-card danger-card">
+                <div class="stat-icon"><i class="fas fa-biohazard"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Pest Pressure</span>
+                    <h3 class="stat-value"><span id="pest-count">0</span></h3>
+                    <div class="stat-change up"><i class="fas fa-exclamation-triangle"></i> Watchlist</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Layout -->
+        <div class="dashboard-widgets">
+            <!-- Sensor Chart Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>Environmental Telemetry</h3>
+                    <div class="last-updated-tag"><i class="fas fa-clock"></i> <span id="last-updated">00:00:00</span>
                     </div>
                 </div>
-                <div class="welcome-img">
-                    <i class="fas fa-seedling"></i>
+                <div class="chart-wrapper">
+                    <canvas id="sensorChart"></canvas>
                 </div>
             </div>
 
-            <div class="stats-grid">
-                <!-- Temperature -->
-                <div class="stat-card">
-                    <div class="stat-icon temp-icon"><i class="fas fa-thermometer-half"></i></div>
-                    <div class="stat-details">
-                        <p class="stat-label">Temperature</p>
-                        <h2 class="stat-value">Temperature: <span id="temp">--</span> °C</h2>
-                    </div>
-                    <div class="stat-trend trend-up">
-                        <i class="fas fa-arrow-up"></i> 2.5%
+            <!-- Quick Controls Widget -->
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>Node Actions</h3>
+                </div>
+
+                <div class="stat-card" style="margin-bottom: 20px; box-shadow: none; border-color: var(--border);">
+                    <div class="stat-icon"><i class="fas fa-spray-can"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Aerosol Actuator</span>
+                        <h3 class="stat-value" id="spray">STANDBY</h3>
                     </div>
                 </div>
 
-                <!-- Humidity -->
-                <div class="stat-card">
-                    <div class="stat-icon hum-icon"><i class="fas fa-tint"></i></div>
-                    <div class="stat-details">
-                        <p class="stat-label">Humidity</p>
-                        <h2 class="stat-value">Humidity: <span id="humidity">--</span> %</h2>
-                    </div>
-                    <div class="stat-trend trend-down">
-                        <i class="fas fa-arrow-down"></i> 1.2%
-                    </div>
-                </div>
-
-                <!-- Soil Moisture (Replacing Pest for demo) -->
-                <div class="stat-card">
-                    <div class="stat-icon soil-icon"><i class="fas fa-seedling"></i></div>
-                    <div class="stat-details">
-                        <p class="stat-label">Soil Moisture</p>
-                        <h2 class="stat-value">Soil Moisture: <span id="soil">--</span> %</h2>
-                    </div>
-                    <div class="stat-trend">
-                        Optimal
-                    </div>
-                </div>
-
-                <!-- Spray Status -->
-                <div class="stat-card">
-                    <div class="stat-icon spray-icon"><i class="fas fa-spray-can"></i></div>
-                    <div class="stat-details">
-                        <p class="stat-label">Spray Status</p>
-                        <h3 class="stat-value status-active" id="spray">Active</h3>
-                    </div>
-                    <div class="stat-action">
-                        Manual Mode
-                    </div>
-                </div>
-
-                <!-- Health Status -->
-                <div class="stat-card">
-                    <div class="stat-icon health-icon"><i class="fas fa-heartbeat"></i></div>
-                    <div class="stat-details">
-                        <p class="stat-label">Crop Health</p>
-                        <h3 class="stat-value status-good">Good</h3>
-                    </div>
-                    <div class="stat-trend trend-up">
-                        <i class="fas fa-check-circle"></i> Healthy
-                    </div>
-                </div>
-
-                <!-- Pi Status -->
-                <div class="stat-card">
-                    <div class="stat-icon pi-icon"><i class="fab fa-raspberry-pi"></i></div>
-                    <div class="stat-details">
-                        <p class="stat-label">System Node</p>
-                        <h3 class="stat-value status-good">Online</h3>
-                    </div>
-                    <div class="stat-trend">
-                        Uptime: 48h
-                    </div>
-                </div>
-
-                <div class="chart-section">
-                    <h2>Sensor History</h2>
-                    <div class="chart-container">
-                        <canvas id="sensorChart" width="600" height="300"></canvas>
+                <div class="admin-only-panel" id="admin-panel"
+                    style="display: none; padding: 0; box-shadow: none; border: none; background: transparent;">
+                    <h4
+                        style="margin-bottom: 20px; font-size: 0.9rem; text-transform: uppercase; color: var(--danger);">
+                        Admin Override</h4>
+                    <div style="display: grid; gap: 10px;">
+                        <button class="btn btn-primary small" style="width: 100%;"><i class="fas fa-shield-alt"></i>
+                            Force Scan</button>
+                        <button class="btn btn-secondary small" style="width: 100%;"><i class="fas fa-download"></i>
+                            System Dump</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Recent Activity Table Placeholder -->
-            <div class="activity-section">
-                <div class="section-header">
-                    <h3>Recent System Alerts</h3>
-                    <a href="#" class="view-all">View All</a>
-                </div>
-                <div class="activity-table-container">
-                    <table class="activity-table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>14:30 PM</td>
-                                <td>Detection</td>
-                                <td>Aphids detected in Sector A</td>
-                                <td><span class="badge badge-warning">Warning</span></td>
-                            </tr>
-                            <tr>
-                                <td>12:15 PM</td>
-                                <td>System</td>
-                                <td>Scheduled spray completed</td>
-                                <td><span class="badge badge-success">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>09:00 AM</td>
-                                <td>Health</td>
-                                <td>Daily crop health scan report</td>
-                                <td><span class="badge badge-info">Info</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Activity Feed -->
+        <div class="widget-card">
+            <div class="widget-header">
+                <h3>Edge Event Log</h3>
+                <a href="logs.html" class="view-all">See Full Log</a>
             </div>
-            <!-- Admin Only Panel (Hidden by default) -->
-            <div id="admin-panel" class="admin-only-panel" style="display: none;">
-                <div class="panel-header">
-                    <h3><i class="fas fa-user-shield"></i> Admin Control Center</h3>
-                    <span class="badge badge-danger">Restricted Access</span>
-                </div>
-                <div class="admin-grid">
-                    <div class="admin-card">
-                        <i class="fas fa-server"></i>
-                        <h4>Server Health</h4>
-                        <p>CPU: 12% | RAM: 45%</p>
-                    </div>
-                    <div class="admin-card">
-                        <i class="fas fa-database"></i>
-                        <h4>DB Status</h4>
-                        <p>Sync: OK | Latency: 4ms</p>
-                    </div>
-                    <div class="admin-card">
-                        <i class="fas fa-microchip"></i>
-                        <h4>Edge Nodes</h4>
-                        <p>Active: 4 | Offline: 0</p>
-                    </div>
-                </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Incident Time</th>
+                            <th>Event Category</th>
+                            <th>Node Description</th>
+                            <th>Response Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>14:30 PM</td>
+                            <td><span class="badge badge-warning">Detection</span></td>
+                            <td>Infestation detected: Aphids (Colony A)</td>
+                            <td>Informed Agent</td>
+                        </tr>
+                        <tr>
+                            <td>12:15 PM</td>
+                            <td><span class="badge badge-success">Actuation</span></td>
+                            <td>Precise spray cycle completed successfully</td>
+                            <td>Verified</td>
+                        </tr>
+                        <tr>
+                            <td>09:00 AM</td>
+                            <td><span class="badge badge-info">Routine</span></td>
+                            <td>Automated spectral health scan complete</td>
+                            <td>Reported</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </main>
+        </div>
     </div>
 
     <script src="dashboard.js"></script>

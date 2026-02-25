@@ -4,318 +4,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spray Control - AgroVision</title>
+    <title>Actuator Controls - AgroVision</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
     <style>
-        .control-panel {
+        .control-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 30px;
         }
 
-        .panel-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: var(--shadow);
-            border: 1px solid #e0e0e0;
-        }
-
-        .panel-card h3 {
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: var(--primary-dark);
-        }
-
-        /* Manual Controls */
-        .manual-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .spray-btn {
+        .control-main-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
             padding: 40px;
-            border-radius: 15px;
-            border: none;
-            font-size: 1.2rem;
-            font-weight: 700;
+            box-shadow: var(--shadow-md);
+        }
+
+        .mode-toggle-group {
+            display: flex;
+            background: var(--bg);
+            padding: 8px;
+            border-radius: var(--radius-md);
+            margin-bottom: 40px;
+            border: 1px solid var(--border);
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            border-radius: var(--radius-sm);
             cursor: pointer;
+            font-weight: 700;
+            font-family: var(--font-heading);
             transition: var(--transition);
+            color: var(--text-light);
+        }
+
+        .mode-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .actuator-status-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 10px solid var(--bg);
+            margin: 0 auto 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .actuator-status-circle.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 40px var(--primary-glow);
+            animation: circle-pulse 2s infinite;
+        }
+
+        @keyframes circle-pulse {
+            0% {
+                box-shadow: 0 0 20px var(--primary-glow);
+            }
+
+            50% {
+                box-shadow: 0 0 50px var(--primary-glow);
+            }
+
+            100% {
+                box-shadow: 0 0 20px var(--primary-glow);
+            }
+        }
+
+        .actuator-status-circle i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .actuator-status-circle.active i {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .status-label-big {
+            font-size: 1.2rem;
+            font-weight: 800;
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .control-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .emergency-btn {
+            background: var(--danger);
+            color: white;
+            width: 100%;
+            padding: 24px;
+            border-radius: var(--radius-md);
+            border: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 15px;
-        }
-
-        .btn-on {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border: 2px solid #c8e6c9;
-        }
-
-        .btn-on:hover {
-            background: #c8e6c9;
-            transform: scale(1.02);
-        }
-
-        .btn-on.active {
-            background: #2e7d32;
-            color: white;
-            box-shadow: 0 0 20px rgba(46, 125, 50, 0.4);
-        }
-
-        .btn-off {
-            background: #fafafa;
-            color: #666;
-            border: 2px solid #eee;
-        }
-
-        .btn-off:hover {
-            background: #f0f0f0;
-            transform: scale(1.02);
-        }
-
-        .btn-off.active {
-            background: #666;
-            color: white;
-        }
-
-        /* Intensity Selector */
-        .intensity-container {
             margin-top: 30px;
         }
 
-        .intensity-options {
-            display: flex;
-            gap: 15px;
+        .emergency-btn:hover {
+            background: #b91c1c;
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
         }
 
-        .intensity-opt {
-            flex: 1;
-            text-align: center;
-            padding: 12px;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .intensity-opt:hover {
-            border-color: var(--primary-light);
-        }
-
-        .intensity-opt.selected {
-            border-color: var(--primary-color);
-            background: #e8f5e9;
-            color: var(--primary-color);
-        }
-
-        /* Auto Mode & Scheduling */
-        .auto-toggle-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: #f5f5f5;
-            border-radius: 12px;
-            margin-bottom: 25px;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked+.slider {
-            background-color: var(--primary-color);
-        }
-
-        input:checked+.slider:before {
-            transform: translateX(26px);
-        }
-
-        .schedule-form label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .schedule-form input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-family: inherit;
-        }
-
-        /* Status Panel */
-        .status-panel {
-            background: #1a1a1a;
-            color: white;
-            border-radius: 20px;
+        .parameter-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
             padding: 25px;
-        }
-
-        .status-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .status-item span:first-child {
-            opacity: 0.6;
-            font-size: 0.9rem;
-        }
-
-        .status-item span:last-child {
-            font-weight: 600;
-        }
-
-        .emergency-stop {
-            width: 100%;
-            padding: 20px;
-            background: #d32f2f;
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            transition: var(--transition);
-            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
-        }
-
-        .emergency-stop:hover {
-            background: #b71c1c;
-            transform: translateY(-2px);
-        }
-
-        .emergency-stop.active {
-            animation: blink-red 0.5s infinite;
-        }
-
-        @keyframes blink-red {
-            50% {
-                background: #ff5252;
-                box-shadow: 0 0 30px #ff5252;
-            }
-        }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-card {
-            background: white;
-            width: 90%;
-            max-width: 400px;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-        }
-
-        .modal-icon {
-            font-size: 3rem;
-            color: #ffa000;
             margin-bottom: 20px;
         }
 
-        .modal-btns {
+        .param-row {
             display: flex;
-            gap: 15px;
-            margin-top: 25px;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .modal-btns button {
-            flex: 1;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
+        .param-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
 
-        .confirm-btn {
-            background: var(--primary-color);
-            color: white;
+        .param-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
-        .cancel-btn {
-            background: #eee;
-            color: #666;
-        }
-
-        @media (max-width: 992px) {
-            .control-panel {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .manual-grid {
-                grid-template-columns: 1fr;
-            }
+        .param-value {
+            font-weight: 700;
+            color: var(--text);
         }
     </style>
 </head>
@@ -324,214 +181,167 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <i class="fas fa-leaf"></i>
                 <span>AgroVision</span>
-            </div>
+            </a>
         </div>
         <nav class="sidebar-nav">
             <ul>
-                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li><a href="camera.html"><i class="fas fa-video"></i> Live Camera</a></li>
-                <li><a href="about.html"><i class="fas fa-info-circle"></i> About Project</a></li>
-                <li class="active"><a href="control.html"><i class="fas fa-spray-can"></i> Spray Control</a></li>
-                <li><a href="analytics.html"><i class="fas fa-chart-pie"></i> Analytics</a></li>
-                <li><a href="history.html"><i class="fas fa-history"></i> Data History</a></li>
-                <li><a href="logs.html"><i class="fas fa-terminal"></i> System Logs</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> <span>Insights</span></a></li>
+                <li><a href="camera.html"><i class="fas fa-video"></i> <span>Live Vision</span></a></li>
+                <li class="active"><a href="control.html"><i class="fas fa-spray-can"></i> <span>System
+                            Controls</span></a></li>
+                <li><a href="analytics.html"><i class="fas fa-chart-pie"></i> <span>Health Analytics</span></a></li>
+                <li><a href="history.html"><i class="fas fa-history"></i> <span>Data Archive</span></a></li>
+                <li><a href="logs.html"><i class="fas fa-terminal"></i> <span>System Logs</span></a></li>
                 <li class="nav-divider"></li>
-                <li><a href="help.html"><i class="fas fa-question-circle"></i> Help</a></li>
-                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
-                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> <span>About Project</span></a></li>
+                <li><a href="help.html"><i class="fas fa-question-circle"></i> <span>Documentation</span></a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> <span>Support</span></a></li>
+                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> <span>Leave
+                            Dashboard</span></a></li>
             </ul>
         </nav>
     </aside>
 
+    <!-- Main Content -->
     <div class="main-content">
         <header class="dashboard-header">
             <div class="header-left">
-                <div class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <h2>Spray Control Panel</h2>
+                <h2>Actuator Control Center</h2>
             </div>
+
             <div class="header-right">
-                <div class="farm-select-container">
-                    <select id="farm-selector">
-                        <option value="farm-north">Farm North: Block A</option>
-                        <option value="farm-south">Farm South: Block B</option>
-                        <option value="farm-east">Farm East: Block C</option>
-                    </select>
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search analytics or logs...">
                 </div>
 
-                <div id="theme-toggle" class="header-icon theme-toggle-btn">
+                <div class="icon-btn theme-toggle-btn" id="theme-toggle">
                     <i class="fas fa-moon"></i>
                 </div>
 
-                <div class="notification-container">
-                    <div id="notification-btn" class="header-icon">
+                <div class="notification-badge">
+                    <div class="icon-btn" id="notification-btn">
                         <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </div>
-                    <div id="notification-dropdown" class="notification-dropdown">
-                        <div class="dropdown-header">
-                            <h5>Notifications</h5>
-                            <span class="view-all">Mark as read</span>
-                        </div>
-                        <ul class="notification-list">
-                            <li class="notification-item">
-                                <i class="fas fa-bug" style="color: #f44336; background: rgba(244, 67, 54, 0.1);"></i>
-                                <div class="notif-text">
-                                    <b>High Pest Intensity!</b>
-                                    <span>Block A region detected 42 Aphids.</span>
-                                    <span class="time">2 mins ago</span>
-                                </div>
-                            </li>
-                            <li class="notification-item">
-                                <i class="fas fa-spray-can"
-                                    style="color: #4caf50; background: rgba(76, 175, 80, 0.1);"></i>
-                                <div class="notif-text">
-                                    <b>Spray Completed</b>
-                                    <span>Automated spray cycle finished successfully.</span>
-                                    <span class="time">15 mins ago</span>
-                                </div>
-                            </li>
-                            <li class="notification-item">
-                                <i class="fas fa-info-circle"
-                                    style="color: #2196f3; background: rgba(33, 150, 243, 0.1);"></i>
-                                <div class="notif-text">
-                                    <b>System Update</b>
-                                    <span>Edge node firmware updated to v1.2.</span>
-                                    <span class="time">1 hour ago</span>
-                                </div>
-                            </li>
-                        </ul>
                     </div>
                 </div>
 
                 <div class="user-profile">
+                    <div class="user-avatar">V</div>
                     <span class="user-name">Farmer Vinil</span>
-                    <div class="user-avatar"><i class="fas fa-user"></i></div>
                 </div>
             </div>
         </header>
 
-        <main class="dashboard-widgets">
-            <div class="control-panel">
-                <div class="panel-left">
-                    <div class="panel-card">
-                        <h3><i class="fas fa-hand-pointer"></i> Manual Override</h3>
-                        <div class="manual-grid" id="manual-controls">
-                            <button class="spray-btn btn-on" id="spray-on" onclick="controlSpray('ON')">
-                                <i class="fas fa-tint"></i>
-                                ACTIVATE SPRAY
-                            </button>
-                            <button class="spray-btn btn-off active" id="spray-off" onclick="controlSpray('OFF')">
-                                <i class="fas fa-power-off"></i>
-                                DEACTIVATE
-                            </button>
-                        </div>
-
-                        <div class="intensity-container">
-                            <p class="stat-label">Spray Intensity</p>
-                            <div class="intensity-options">
-                                <div class="intensity-opt" data-level="low">Low</div>
-                                <div class="intensity-opt selected" data-level="medium">Medium</div>
-                                <div class="intensity-opt" data-level="high">High</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="panel-card" style="margin-top: 30px;">
-                        <h3><i class="fas fa-robot"></i> Automation & Scheduling</h3>
-                        <div class="auto-toggle-container">
-                            <div class="auto-toggle-label">
-                                <p style="font-weight: 600; margin: 0;">AI Auto Mode</p>
-                                <p style="font-size: 0.8rem; color: #666; margin: 0;">Automatic spray based on detection
-                                </p>
-                            </div>
-                            <label class="switch">
-                                <input type="checkbox" id="auto-mode-toggle">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="schedule-form">
-                            <label>Next Scheduled Spray</label>
-                            <div style="display: flex; gap: 15px;">
-                                <input type="date" value="2026-02-23">
-                                <input type="time" value="06:00">
-                            </div>
-                            <button class="btn btn-primary small" style="width: auto;"
-                                onclick="alert('Schedule updated')">Set Schedule</button>
-                        </div>
-                    </div>
+        <div class="control-grid">
+            <div class="control-main-card">
+                <div class="mode-toggle-group">
+                    <div class="mode-btn active" onclick="setMode('MANUAL')">Manual Override</div>
+                    <div class="mode-btn" onclick="setMode('AI_AUTO')">AI Autonomous</div>
                 </div>
 
-                <div class="panel-right">
-                    <div class="status-panel">
-                        <h3>System Status</h3>
-                        <div class="status-item">
-                            <span>Control Mode</span>
-                            <span id="current-mode">Manual</span>
-                        </div>
-                        <div class="status-item">
-                            <span>Spray State</span>
-                            <span id="spray-state">Idle</span>
-                        </div>
-                        <div class="status-item">
-                            <span>Last Activation</span>
-                            <span>Today, 10:45 AM</span>
-                        </div>
-                        <div class="status-item">
-                            <span>Tank Level</span>
-                            <span style="color: #4caf50;">82%</span>
-                        </div>
-                        <div class="status-item" style="border: none;">
-                            <span>System Voltage</span>
-                            <span>12.4V</span>
-                        </div>
-                    </div>
+                <div class="actuator-status-circle" id="actuator-status">
+                    <i class="fas fa-spray-can"></i>
+                    <span class="status-label-big" id="status-label">Standby</span>
+                </div>
 
-                    <button class="emergency-stop" id="emergency-stop">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        EMERGENCY STOP
-                    </button>
+                <div class="control-actions">
+                    <button class="btn btn-primary" onclick="triggerSpray('ON')" id="on-btn"
+                        style="flex: 1; padding: 24px;">Initialize Spray</button>
+                    <button class="btn btn-secondary" onclick="triggerSpray('OFF')" id="off-btn"
+                        style="flex: 1; padding: 24px;">Deactivate</button>
+                </div>
+
+                <div style="margin-top: 40px;">
+                    <h4 style="margin-bottom: 20px;">Spray Intensity Spectrum</h4>
+                    <div style="display: flex; gap: 15px;">
+                        <button class="btn btn-secondary small" style="flex: 1;">Low</button>
+                        <button class="btn btn-primary small" style="flex: 1;">Optimal</button>
+                        <button class="btn btn-secondary small" style="flex: 1;">Intensive</button>
+                    </div>
                 </div>
             </div>
-        </main>
-    </div>
 
-    <!-- Confirmation Modal -->
-    <div class="modal-overlay" id="confirm-modal">
-        <div class="modal-card">
-            <div class="modal-icon"><i class="fas fa-exclamation-circle"></i></div>
-            <h3>Critical Confirmation</h3>
-            <p>You are about to manually activate the pesticide spray system. Ensure the area is clear of people and
-                animals.</p>
-            <div class="modal-btns">
-                <button class="cancel-btn" id="cancel-spray">Cancel</button>
-                <button class="confirm-btn" id="confirm-spray">Confirm & Activate</button>
+            <div class="control-side">
+                <div class="parameter-card">
+                    <h4 style="margin-bottom: 20px;">Node Telemetry</h4>
+                    <div class="param-row">
+                        <span class="param-label">Actuator Voltage</span>
+                        <span class="param-value">12.4 V</span>
+                    </div>
+                    <div class="param-row">
+                        <span class="param-label">Tank Capacity</span>
+                        <span class="param-value" style="color: var(--success);">84%</span>
+                    </div>
+                    <div class="param-row">
+                        <span class="param-label">Nozzle Pressure</span>
+                        <span class="param-value">4.2 Bar</span>
+                    </div>
+                    <div class="param-row">
+                        <span class="param-label">Last Maintenance</span>
+                        <span class="param-value">22 Feb</span>
+                    </div>
+                </div>
+
+                <div class="parameter-card">
+                    <h4 style="margin-bottom: 20px;">Environmental Lock</h4>
+                    <div class="param-row">
+                        <span class="param-label">Wind Speed</span>
+                        <span class="param-value">3.2 km/h</span>
+                    </div>
+                    <div class="param-row">
+                        <span class="param-label">Drift Risk</span>
+                        <span class="param-value" style="color: var(--success);">Low</span>
+                    </div>
+                </div>
+
+                <button class="emergency-btn" onclick="emergencyStop()">
+                    <i class="fas fa-skull-crossbones"></i> Emergency Kill-Switch
+                </button>
             </div>
         </div>
     </div>
 
-    <script src="control.js"></script>
     <script src="dashboard.js"></script>
     <script>
-        async function controlSpray(status) {
+        const statusCircle = document.getElementById('actuator-status');
+        const statusLabel = document.getElementById('status-label');
+
+        function setMode(mode) {
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            alert(`System Mode Switched To: ${mode}`);
+        }
+
+        async function triggerSpray(status) {
             try {
                 const baseUrl = `http://${window.location.hostname || 'localhost'}:5000`;
-                await fetch(`${baseUrl}/api/spray`, {
+                const res = await fetch(`${baseUrl}/api/spray`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ status: status })
                 });
-                alert("Spray turned " + status);
-                // Trigger a refresh of the status
-                if (typeof fetchSprayStatus === 'function') fetchSprayStatus();
-            } catch (error) {
-                console.error("Error controlling spray:", error);
+
+                if (status === 'ON') {
+                    statusCircle.classList.add('active');
+                    statusLabel.innerText = 'Active';
+                    statusLabel.style.color = 'var(--primary)';
+                } else {
+                    statusCircle.classList.remove('active');
+                    statusLabel.innerText = 'Standby';
+                    statusLabel.style.color = 'inherit';
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Remote node communication failed.");
             }
+        }
+
+        function emergencyStop() {
+            triggerSpray('OFF');
+            alert("EMERGENCY KILL-SWITCH ACTIVATED. ALL ACTUATORS LOCKED.");
         }
     </script>
 </body>

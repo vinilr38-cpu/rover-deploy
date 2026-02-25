@@ -4,109 +4,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Help Center - AgroVision</title>
+    <title>Knowledge Base - AgroVision</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
     <style>
-        .help-container {
-            max-width: 900px;
+        .help-hero {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 80px 40px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px var(--primary-glow);
+        }
+
+        .help-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-family: var(--font-heading);
+            font-weight: 800;
+        }
+
+        .help-search {
+            max-width: 600px;
             margin: 0 auto;
-        }
-
-        .section-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .section-title {
-            color: var(--primary-dark);
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 1.5rem;
-        }
-
-        /* Step by Step Guide */
-        .tutorial-steps {
-            display: grid;
-            gap: 40px;
-        }
-
-        .step-item {
-            display: flex;
-            gap: 25px;
             position: relative;
         }
 
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background: var(--primary-color);
+        .help-search input {
+            width: 100%;
+            padding: 20px 30px 20px 60px;
+            border-radius: var(--radius-full);
+            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 1.1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .help-search input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .help-search i {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .guide-step {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .guide-step:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .step-num-bubble {
+            width: 35px;
+            height: 35px;
+            background: var(--primary);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
-        }
-
-        .step-content h4 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .step-content p {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .step-placeholder {
-            width: 100%;
-            height: 150px;
-            background: #f8f9fa;
-            border: 2px dashed #ddd;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #aaa;
-            font-style: italic;
+            font-weight: 800;
             font-size: 0.9rem;
+            margin-bottom: 20px;
         }
 
-        /* FAQ Accordion */
-        .faq-list {
-            display: grid;
+        .faq-accordion {
+            display: flex;
+            flex-direction: column;
             gap: 15px;
         }
 
         .faq-item {
-            border: 1px solid #eee;
-            border-radius: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
             overflow: hidden;
-            transition: var(--transition);
         }
 
-        .faq-question {
-            width: 100%;
-            padding: 20px;
-            background: white;
-            border: none;
-            text-align: left;
-            font-weight: 600;
-            color: #444;
+        .faq-header {
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -114,47 +122,34 @@
             transition: var(--transition);
         }
 
-        .faq-question:hover {
-            background: #fcfdfc;
+        .faq-header:hover {
+            background: var(--bg);
         }
 
-        .faq-question i {
-            transition: transform 0.3s ease;
+        .faq-header h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
         }
 
-        .faq-item.active .faq-question {
-            color: var(--primary-color);
-        }
-
-        .faq-item.active i {
-            transform: rotate(180deg);
-        }
-
-        .faq-answer {
+        .faq-content {
             max-height: 0;
             overflow: hidden;
-            background: #fcfdfc;
-            transition: max-height 0.3s ease-out, padding 0.3s ease;
-            color: #666;
-            line-height: 1.6;
-            padding: 0 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--bg);
+            padding: 0 30px;
+            color: var(--text-light);
+            line-height: 1.7;
         }
 
-        .faq-item.active .faq-answer {
-            max-height: 200px;
-            padding: 20px;
-            border-top: 1px solid #f0f0f0;
+        .faq-item.active .faq-content {
+            max-height: 300px;
+            padding: 20px 30px 30px;
         }
 
-        @media (max-width: 768px) {
-            .section-card {
-                padding: 25px;
-            }
-
-            .step-item {
-                flex-direction: column;
-                gap: 10px;
-            }
+        .faq-item.active .faq-header i {
+            transform: rotate(180deg);
+            color: var(--primary);
         }
     </style>
 </head>
@@ -163,191 +158,124 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <i class="fas fa-leaf"></i>
                 <span>AgroVision</span>
-            </div>
+            </a>
         </div>
         <nav class="sidebar-nav">
             <ul>
-                <li><a href="about.html"><i class="fas fa-info-circle"></i> About Project</a></li>
-                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li><a href="camera.html"><i class="fas fa-video"></i> Live Camera</a></li>
-                <li><a href="control.html"><i class="fas fa-spray-can"></i> Spray Control</a></li>
-                <li><a href="analytics.html"><i class="fas fa-chart-pie"></i> Analytics</a></li>
-                <li><a href="history.html"><i class="fas fa-history"></i> Data History</a></li>
-                <li><a href="logs.html"><i class="fas fa-terminal"></i> System Logs</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> <span>Insights</span></a></li>
+                <li><a href="camera.html"><i class="fas fa-video"></i> <span>Live Vision</span></a></li>
+                <li><a href="control.html"><i class="fas fa-spray-can"></i> <span>System Controls</span></a></li>
+                <li><a href="analytics.html"><i class="fas fa-chart-pie"></i> <span>Health Analytics</span></a></li>
+                <li><a href="history.html"><i class="fas fa-history"></i> <span>Data Archive</span></a></li>
+                <li><a href="logs.html"><i class="fas fa-terminal"></i> <span>System Logs</span></a></li>
                 <li class="nav-divider"></li>
-                <li class="active"><a href="help.html"><i class="fas fa-question-circle"></i> Help</a></li>
-                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
-                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> <span>About Project</span></a></li>
+                <li class="active"><a href="help.html"><i class="fas fa-question-circle"></i>
+                        <span>Documentation</span></a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> <span>Support</span></a></li>
+                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> <span>Leave
+                            Dashboard</span></a></li>
             </ul>
         </nav>
     </aside>
 
+    <!-- Main Content -->
     <div class="main-content">
         <header class="dashboard-header">
             <div class="header-left">
-                <div class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <h2>Help & Tutorials</h2>
+                <h2>Knowledge Base</h2>
             </div>
             <div class="header-right">
-                <div class="farm-select-container">
-                    <select id="farm-selector">
-                        <option value="farm-north">Farm North: Block A</option>
-                        <option value="farm-south">Farm South: Block B</option>
-                        <option value="farm-east">Farm East: Block C</option>
-                    </select>
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search analytics or logs...">
                 </div>
 
-                <div id="theme-toggle" class="header-icon theme-toggle-btn">
+                <div class="icon-btn theme-toggle-btn" id="theme-toggle">
                     <i class="fas fa-moon"></i>
                 </div>
 
-                <div class="notification-container">
-                    <div id="notification-btn" class="header-icon">
+                <div class="notification-badge">
+                    <div class="icon-btn" id="notification-btn">
                         <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </div>
-                    <div id="notification-dropdown" class="notification-dropdown">
-                        <div class="dropdown-header">
-                            <h5>Notifications</h5>
-                            <span class="view-all">Mark as read</span>
-                        </div>
-                        <ul class="notification-list">
-                            <li class="notification-item">
-                                <i class="fas fa-info-circle"
-                                    style="color: #2196f3; background: rgba(33, 150, 243, 0.1);"></i>
-                                <div class="notif-text">
-                                    <b>Help Doc Updated</b>
-                                    <span>New tutorial on automated spray scheduling.</span>
-                                    <span class="time">1 hour ago</span>
-                                </div>
-                            </li>
-                        </ul>
                     </div>
                 </div>
 
                 <div class="user-profile">
+                    <div class="user-avatar">V</div>
                     <span class="user-name">Farmer Vinil</span>
-                    <div class="user-avatar"><i class="fas fa-user"></i></div>
                 </div>
             </div>
         </header>
 
-        <main class="dashboard-widgets" style="padding: 0;">
-            <div class="help-container">
-                <!-- Step by Step Instructions -->
-                <div class="section-card">
-                    <h3 class="section-title"><i class="fas fa-book"></i> Getting Started Guide</h3>
-                    <div class="tutorial-steps">
-                        <div class="step-item">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h4>Setup Raspberry Pi</h4>
-                                <p>Flash the AgroVision OS image onto your SD card and insert it into the Raspberry Pi.
-                                    Power on the device and wait for the status LED to turn green.</p>
-                                <div class="step-placeholder">[Diagram: Pi Power Connection]</div>
-                            </div>
-                        </div>
+        <section class="help-hero">
+            <h1>How can we assist you?</h1>
+            <div class="help-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search for documentation, tutorials, or error codes...">
+            </div>
+        </section>
 
-                        <div class="step-item">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h4>Connect Camera</h4>
-                                <p>Attach the Pi Camera module to the CSI port or connect a USB camera. Ensure the lens
-                                    is clear and pointed toward the crop area.</p>
-                                <div class="step-placeholder">[Diagram: Camera CSI Slot]</div>
-                            </div>
-                        </div>
+        <h3 style="margin-bottom: 25px;">Onboarding Guide</h3>
+        <div class="guide-grid">
+            <div class="guide-step">
+                <div class="step-num-bubble">01</div>
+                <h4>Node Provisioning</h4>
+                <p style="font-size: 0.9rem; color: var(--text-light);">Connect your Raspberry Pi to the local mesh
+                    network and flash the latest image from our portal.</p>
+            </div>
+            <div class="guide-step">
+                <div class="step-num-bubble">02</div>
+                <h4>Vision Alignment</h4>
+                <p style="font-size: 0.9rem; color: var(--text-light);">Mount the CSI camera module at a 45-degree angle
+                    for optimal crop surveillance coverage.</p>
+            </div>
+            <div class="guide-step">
+                <div class="step-num-bubble">03</div>
+                <h4>API Integration</h4>
+                <p style="font-size: 0.9rem; color: var(--text-light);">Link your dashboard account with the local node
+                    IP for real-time telemetry streaming.</p>
+            </div>
+        </div>
 
-                        <div class="step-item">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h4>Login to Portal</h4>
-                                <p>Open the AgroVision web app on your mobile or PC. Use your registered farmer
-                                    credentials to access the main dashboard.</p>
-                                <div class="step-placeholder">[Interface: Login Screen]</div>
-                            </div>
-                        </div>
-
-                        <div class="step-item">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <h4>Monitor Farm</h4>
-                                <p>Navigate to the 'Live Camera' section. You will see real-time video with AI-powered
-                                    pest detection overlays.</p>
-                                <div class="step-placeholder">[Interface: Camera Stream]</div>
-                            </div>
-                        </div>
-
-                        <div class="step-item">
-                            <div class="step-number">5</div>
-                            <div class="step-content">
-                                <h4>Control Spray</h4>
-                                <p>Use the 'Spray Control' panel to manually activate pesticide application or enable
-                                    'AI Auto Mode' for autonomous operation.</p>
-                                <div class="step-placeholder">[Interface: Control Buttons]</div>
-                            </div>
-                        </div>
-
-                        <div class="step-item">
-                            <div class="step-number">6</div>
-                            <div class="step-content">
-                                <h4>Download Reports</h4>
-                                <p>Go to the 'History' page to review system logs and export findings as CSV or PDF for
-                                    compliance records.</p>
-                                <div class="step-placeholder">[Interface: Export Buttons]</div>
-                            </div>
-                        </div>
-                    </div>
+        <h3 style="margin-bottom: 25px;">Frequently Asked Questions</h3>
+        <div class="faq-accordion">
+            <div class="faq-item" onclick="this.classList.toggle('active')">
+                <div class="faq-header">
+                    <h4>What is the latency of the edge camera stream?</h4>
+                    <i class="fas fa-chevron-down"></i>
                 </div>
-
-                <!-- FAQ Section -->
-                <div class="section-card">
-                    <h3 class="section-title"><i class="fas fa-comments"></i> Frequently Asked Questions</h3>
-                    <div class="faq-list">
-                        <div class="faq-item">
-                            <button class="faq-question">
-                                What does the red status light on the dashboard mean?
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="faq-answer">
-                                A red status light indicates that the system has lost connection with the Raspberry Pi.
-                                Check your Wi-Fi signal or power supply to the edge device.
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <button class="faq-question">
-                                How often should I calibrate the sensors?
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="faq-answer">
-                                We recommend sensor calibration once per crop cycle or if you notice significant
-                                deviations in moisture or temperature readings.
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <button class="faq-question">
-                                Can I use the system without an internet connection?
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="faq-answer">
-                                Yes, AI detections and spray controls run locally on the Raspberry Pi. Internet is only
-                                required to access the remote dashboard and cloud-synced reports.
-                            </div>
-                        </div>
-                    </div>
+                <div class="faq-content">
+                    Our system uses h.264 hardware encoding on the Raspberry Pi combined with a WebRTC signaling server
+                    to achieve sub-200ms glass-to-glass latency, even in low-bandwidth environments.
                 </div>
             </div>
-        </main>
+            <div class="faq-item" onclick="this.classList.toggle('active')">
+                <div class="faq-header">
+                    <h4>Can the system identify pests at night?</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-content">
+                    Yes, with the optional IR-cut camera module and external infrared illumination, our ResNet-based
+                    models are trained to detect silhouettes and heat signatures of common nocturnal pests.
+                </div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('active')">
+                <div class="faq-header">
+                    <h4>How do I update the AI model on the edge node?</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-content">
+                    Model updates are delivered as OTA (Over-The-Air) binary patches. Navigate to System Logs &gt;
+                    Hardware and click "Sync Weights" when a new version is detected.
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script src="help.js"></script>
     <script src="dashboard.js"></script>
 </body>
 

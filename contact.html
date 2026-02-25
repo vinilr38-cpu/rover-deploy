@@ -4,179 +4,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - AgroVision</title>
+    <title>Support Portal - AgroVision</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
     <style>
-        .contact-container {
+        .contact-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 20px;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
         }
 
-        .contact-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: var(--shadow);
-            border: 1px solid #e0e0e0;
-        }
-
-        .contact-card h3 {
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: var(--primary-dark);
-            font-size: 1.4rem;
-        }
-
-        /* Form Styles */
-        .contact-form {
-            display: grid;
-            gap: 20px;
-        }
-
-        .form-group {
+        .contact-info-panel {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            color: #444;
-            font-size: 0.95rem;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-family: inherit;
-            transition: var(--transition);
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
-            outline: none;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        /* Support Info */
-        .support-info {
-            display: grid;
             gap: 25px;
         }
 
-        .info-item {
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: var(--radius-md);
             display: flex;
             gap: 20px;
-            align-items: flex-start;
+            transition: var(--transition);
         }
 
-        .info-icon {
-            width: 45px;
-            height: 45px;
-            background: #e8f5e9;
-            color: var(--primary-color);
-            border-radius: 12px;
+        .info-card:hover {
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        .info-icon-box {
+            width: 50px;
+            height: 50px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            flex-shrink: 0;
+            color: var(--primary);
         }
 
-        .info-text h5 {
-            margin: 0 0 5px 0;
-            font-size: 1rem;
-            color: #333;
+        .contact-form-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
         }
 
-        .info-text p {
-            margin: 0;
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.5;
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
-        .social-links {
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text);
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+            outline: none;
+        }
+
+        .contact-socials {
             display: flex;
             gap: 15px;
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
-        .social-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: #f5f5f5;
-            color: #444;
+        .social-circle {
+            width: 45px;
+            height: 45px;
+            background: var(--bg);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: var(--text-light);
             transition: var(--transition);
-            text-decoration: none;
+            border: 1px solid var(--border);
         }
 
-        .social-btn:hover {
-            background: var(--primary-color);
+        .social-circle:hover {
+            background: var(--primary);
             color: white;
-            transform: translateY(-3px);
-        }
-
-        /* Map Placeholder */
-        .map-placeholder {
-            width: 100%;
-            height: 250px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            border: 1px solid #eee;
-            margin-top: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #aaa;
-            font-style: italic;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .map-placeholder::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=1000') center/cover;
-            opacity: 0.3;
-        }
-
-        .map-marker {
-            position: relative;
-            z-index: 1;
-            font-size: 2rem;
-            color: #f44336;
-        }
-
-        @media (max-width: 992px) {
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
+            border-color: var(--primary);
         }
     </style>
 </head>
@@ -185,157 +134,140 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <i class="fas fa-leaf"></i>
                 <span>AgroVision</span>
-            </div>
+            </a>
         </div>
         <nav class="sidebar-nav">
             <ul>
-                <li><a href="about.html"><i class="fas fa-info-circle"></i> About Project</a></li>
-                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li><a href="camera.html"><i class="fas fa-video"></i> Live Camera</a></li>
-                <li><a href="control.html"><i class="fas fa-spray-can"></i> Spray Control</a></li>
-                <li><a href="analytics.html"><i class="fas fa-chart-pie"></i> Analytics</a></li>
-                <li><a href="history.html"><i class="fas fa-history"></i> Data History</a></li>
-                <li><a href="logs.html"><i class="fas fa-terminal"></i> System Logs</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> <span>Insights</span></a></li>
+                <li><a href="camera.html"><i class="fas fa-video"></i> <span>Live Vision</span></a></li>
+                <li><a href="control.html"><i class="fas fa-spray-can"></i> <span>System Controls</span></a></li>
+                <li><a href="analytics.html"><i class="fas fa-chart-pie"></i> <span>Health Analytics</span></a></li>
+                <li><a href="history.html"><i class="fas fa-history"></i> <span>Data Archive</span></a></li>
+                <li><a href="logs.html"><i class="fas fa-terminal"></i> <span>System Logs</span></a></li>
                 <li class="nav-divider"></li>
-                <li><a href="help.html"><i class="fas fa-question-circle"></i> Help</a></li>
-                <li class="active"><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
-                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> <span>About Project</span></a></li>
+                <li><a href="help.html"><i class="fas fa-question-circle"></i> <span>Documentation</span></a></li>
+                <li class="active"><a href="contact.html"><i class="fas fa-envelope"></i> <span>Support</span></a></li>
+                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> <span>Leave
+                            Dashboard</span></a></li>
             </ul>
         </nav>
     </aside>
 
+    <!-- Main Content -->
     <div class="main-content">
         <header class="dashboard-header">
             <div class="header-left">
-                <div class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <h2>Contact Us</h2>
+                <h2>Support Portal</h2>
             </div>
             <div class="header-right">
-                <div class="farm-select-container">
-                    <select id="farm-selector">
-                        <option value="farm-north">Farm North: Block A</option>
-                        <option value="farm-south">Farm South: Block B</option>
-                        <option value="farm-east">Farm East: Block C</option>
-                    </select>
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search analytics or logs...">
                 </div>
 
-                <div id="theme-toggle" class="header-icon theme-toggle-btn">
+                <div class="icon-btn theme-toggle-btn" id="theme-toggle">
                     <i class="fas fa-moon"></i>
                 </div>
 
-                <div class="notification-container">
-                    <div id="notification-btn" class="header-icon">
+                <div class="notification-badge">
+                    <div class="icon-btn" id="notification-btn">
                         <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </div>
-                    <div id="notification-dropdown" class="notification-dropdown">
-                        <div class="dropdown-header">
-                            <h5>Notifications</h5>
-                            <span class="view-all">Mark as read</span>
-                        </div>
-                        <ul class="notification-list">
-                            <li class="notification-item">
-                                <i class="fas fa-envelope"
-                                    style="color: #2e7d32; background: rgba(46, 125, 50, 0.1);"></i>
-                                <div class="notif-text">
-                                    <b>Support Ticket</b>
-                                    <span>Technical inquiry #402 resolved.</span>
-                                    <span class="time">3 hours ago</span>
-                                </div>
-                            </li>
-                        </ul>
                     </div>
                 </div>
 
                 <div class="user-profile">
+                    <div class="user-avatar">V</div>
                     <span class="user-name">Farmer Vinil</span>
-                    <div class="user-avatar"><i class="fas fa-user"></i></div>
                 </div>
             </div>
         </header>
 
-        <main class="dashboard-widgets" style="padding: 0;">
-            <div class="contact-container">
-                <!-- Contact Form -->
-                <div class="contact-card">
-                    <h3><i class="fas fa-paper-plane"></i> Send us a Message</h3>
-                    <form class="contact-form" id="agro-contact-form">
-                        <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" placeholder="Enter your name" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Email Address</label>
-                            <input type="email" placeholder="Enter your email" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Message</label>
-                            <textarea placeholder="How can we help you today?"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">
-                            Submit Inqury
-                        </button>
-                    </form>
+        <div class="contact-grid">
+            <div class="contact-info-panel">
+                <div class="widget-card" style="margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 15px;">Elite Support</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-light);">Direct access to our infrastructure
+                        engineers and project leads.</p>
                 </div>
 
-                <!-- Support Info & Links -->
-                <div class="contact-card">
-                    <h3><i class="fas fa-headset"></i> Support & Information</h3>
-                    <div class="support-info">
-                        <div class="info-item">
-                            <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
-                            <div class="info-text">
-                                <h5>Our Location</h5>
-                                <p>AgroVision Tech Hub, Farm Road 101, Agri-Center, IN 560001</p>
-                            </div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
-                            <div class="info-text">
-                                <h5>Phone Support</h5>
-                                <p>+1 (800) AGRO-VIS (24/7 Priority Helpline)</p>
-                            </div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-icon"><i class="fas fa-envelope-open-text"></i></div>
-                            <div class="info-text">
-                                <h5>Email Inquiry</h5>
-                                <p>support@agrovision.ai<br>sales@agrovision.ai</p>
-                            </div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-icon"><i class="fas fa-share-alt"></i></div>
-                            <div class="info-text">
-                                <h5>Social Connect</h5>
-                                <div class="social-links">
-                                    <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
-                                    <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
-                                    <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
-                                </div>
-                            </div>
-                        </div>
+                <div class="info-card">
+                    <div class="info-icon-box"><i class="fas fa-envelope"></i></div>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Digital Inquiry</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-light);">engineer@agrovision.ai</p>
                     </div>
+                </div>
 
-                    <div class="map-placeholder">
-                        <i class="fas fa-map-marker-alt map-marker"></i>
-                        <span style="z-index: 1;">Center Location Map</span>
+                <div class="info-card">
+                    <div class="info-icon-box"><i class="fas fa-phone-alt"></i></div>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Emergency Line</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-light);">+91 9000 123 456</p>
                     </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon-box"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Innovation Hub</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-light);">Block C, Techno Park, IN</p>
+                    </div>
+                </div>
+
+                <div class="contact-socials">
+                    <a href="#" class="social-circle"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-circle"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-circle"><i class="fab fa-twitter"></i></a>
                 </div>
             </div>
-        </main>
+
+            <div class="contact-form-card">
+                <h3 style="margin-bottom: 30px;">Initialize Support Ticket</h3>
+                <form id="support-form">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Identification</label>
+                            <input type="text" placeholder="Full Name" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Secure Email</label>
+                            <input type="email" placeholder="email@address.com" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Department Selection</label>
+                        <select>
+                            <option>Technical Infrastructure</option>
+                            <option>AI Model Feedback</option>
+                            <option>Hardware Replacement</option>
+                            <option>General Inquiry</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Detailed Briefing</label>
+                        <textarea rows="6" placeholder="Document the nature of your request..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 20px;">Transmit
+                        Dispatch</button>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <script src="contact.js"></script>
     <script src="dashboard.js"></script>
+    <script>
+        document.getElementById('support-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Transmission Successful. Support ticket registered in the encrypted queue.');
+        });
+    </script>
 </body>
 
 </html>

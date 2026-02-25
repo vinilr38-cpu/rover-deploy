@@ -4,10 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics - AgroVision</title>
+    <title>Intelligence Analytics - AgroVision</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
@@ -16,99 +20,41 @@
         .analytics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 30px;
-            margin-top: 20px;
+            gap: 25px;
         }
 
-        .chart-card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: var(--shadow);
-            border: 1px solid #e0e0e0;
-            transition: var(--transition);
-        }
-
-        .chart-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .chart-header {
+        .filter-bar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 20px 30px;
+            border-radius: var(--radius-md);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .chart-header h3 {
-            margin: 0;
-            font-size: 1.1rem;
-            color: var(--primary-dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
-        }
-
-        .filter-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            padding: 15px 25px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
             margin-bottom: 30px;
+            box-shadow: var(--shadow-sm);
         }
 
-        .date-filter {
+        .filter-group {
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
-        .date-filter input {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: inherit;
-        }
-
-        .export-btn {
-            background: #e8f5e9;
-            color: var(--primary-color);
-            border: 1px solid #c8e6c9;
-            padding: 8px 20px;
-            border-radius: 8px;
+        .filter-group label {
+            font-size: 0.9rem;
             font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: var(--transition);
+            color: var(--text-light);
         }
 
-        .export-btn:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        @media (max-width: 768px) {
-            .analytics-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .filter-section {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
+        .filter-group input {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 8px 15px;
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: inherit;
         }
     </style>
 </head>
@@ -117,149 +63,108 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <i class="fas fa-leaf"></i>
                 <span>AgroVision</span>
-            </div>
+            </a>
         </div>
         <nav class="sidebar-nav">
             <ul>
-                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li><a href="camera.html"><i class="fas fa-video"></i> Live Camera</a></li>
-                <li><a href="control.html"><i class="fas fa-spray-can"></i> Spray Control</a></li>
-                <li><a href="about.html"><i class="fas fa-info-circle"></i> About Project</a></li>
-                <li class="active"><a href="analytics.html"><i class="fas fa-chart-pie"></i> Analytics</a></li>
-                <li><a href="history.html"><i class="fas fa-history"></i> Data History</a></li>
-                <li><a href="logs.html"><i class="fas fa-terminal"></i> System Logs</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> <span>Insights</span></a></li>
+                <li><a href="camera.html"><i class="fas fa-video"></i> <span>Live Vision</span></a></li>
+                <li><a href="control.html"><i class="fas fa-spray-can"></i> <span>System Controls</span></a></li>
+                <li class="active"><a href="analytics.html"><i class="fas fa-chart-pie"></i> <span>Health
+                            Analytics</span></a></li>
+                <li><a href="history.html"><i class="fas fa-history"></i> <span>Data Archive</span></a></li>
+                <li><a href="logs.html"><i class="fas fa-terminal"></i> <span>System Logs</span></a></li>
                 <li class="nav-divider"></li>
-                <li><a href="help.html"><i class="fas fa-question-circle"></i> Help</a></li>
-                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
-                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> <span>About Project</span></a></li>
+                <li><a href="help.html"><i class="fas fa-question-circle"></i> <span>Documentation</span></a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> <span>Support</span></a></li>
+                <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> <span>Leave
+                            Dashboard</span></a></li>
             </ul>
         </nav>
     </aside>
 
+    <!-- Main Content -->
     <div class="main-content">
         <header class="dashboard-header">
             <div class="header-left">
-                <div class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <h2>Data Analytics</h2>
+                <h2>Intelligence Analytics</h2>
             </div>
             <div class="header-right">
-                <div class="farm-select-container">
-                    <select id="farm-selector">
-                        <option value="farm-north">Farm North: Block A</option>
-                        <option value="farm-south">Farm South: Block B</option>
-                        <option value="farm-east">Farm East: Block C</option>
-                    </select>
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search analytics or logs...">
                 </div>
 
-                <div id="theme-toggle" class="header-icon theme-toggle-btn">
+                <div class="icon-btn theme-toggle-btn" id="theme-toggle">
                     <i class="fas fa-moon"></i>
                 </div>
 
-                <div class="notification-container">
-                    <div id="notification-btn" class="header-icon">
+                <div class="notification-badge">
+                    <div class="icon-btn" id="notification-btn">
                         <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </div>
-                    <div id="notification-dropdown" class="notification-dropdown">
-                        <div class="dropdown-header">
-                            <h5>Notifications</h5>
-                            <span class="view-all">Mark as read</span>
-                        </div>
-                        <ul class="notification-list">
-                            <li class="notification-item">
-                                <i class="fas fa-bug" style="color: #f44336; background: rgba(244, 67, 54, 0.1);"></i>
-                                <div class="notif-text">
-                                    <b>High Pest Intensity!</b>
-                                    <span>Block A region detected 42 Aphids.</span>
-                                    <span class="time">2 mins ago</span>
-                                </div>
-                            </li>
-                            <li class="notification-item">
-                                <i class="fas fa-spray-can"
-                                    style="color: #4caf50; background: rgba(76, 175, 80, 0.1);"></i>
-                                <div class="notif-text">
-                                    <b>Spray Completed</b>
-                                    <span>Automated spray cycle finished successfully.</span>
-                                    <span class="time">15 mins ago</span>
-                                </div>
-                            </li>
-                        </ul>
                     </div>
                 </div>
 
                 <div class="user-profile">
+                    <div class="user-avatar">V</div>
                     <span class="user-name">Farmer Vinil</span>
-                    <div class="user-avatar"><i class="fas fa-user"></i></div>
                 </div>
             </div>
         </header>
 
-        <main class="dashboard-widgets" style="padding: 0;">
-            <div class="filter-section">
-                <div class="date-filter">
-                    <label>Filter by Date Range:</label>
-                    <input type="date" value="2026-02-01">
-                    <span>to</span>
-                    <input type="date" value="2026-02-22">
-                    <button class="btn btn-primary small" style="margin-left: 10px;">Apply</button>
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label>Archive Range:</label>
+                <input type="date" value="2026-02-01">
+                <span style="color: var(--text-light);">to</span>
+                <input type="date" value="2026-02-25">
+            </div>
+            <button class="btn btn-primary small" onclick="alert('Compiling cross-node report...')">
+                <i class="fas fa-file-export"></i> Compile Report
+            </button>
+        </div>
+
+        <div class="analytics-grid">
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>Pest Detection Incident Load</h3>
                 </div>
-                <button class="export-btn">
-                    <i class="fas fa-file-export"></i>
-                    Export PDF Report
-                </button>
+                <div class="chart-wrapper">
+                    <canvas id="pestLineChart"></canvas>
+                </div>
             </div>
 
-            <div class="analytics-grid">
-                <!-- Line Chart: Pest Detection -->
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fas fa-bug"></i> Pest Detection Over Time</h3>
-                        <i class="fas fa-ellipsis-v" style="color: #ccc;"></i>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="pestLineChart"></canvas>
-                    </div>
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>Chemical Resource Allocation</h3>
                 </div>
-
-                <!-- Bar Chart: Spray Usage -->
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fas fa-spray-can"></i> Spray Usage (Litres/Day)</h3>
-                        <i class="fas fa-ellipsis-v" style="color: #ccc;"></i>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="sprayBarChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Pie Chart: Pest Types -->
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fas fa-chart-pie"></i> Pest Type Distribution</h3>
-                        <i class="fas fa-ellipsis-v" style="color: #ccc;"></i>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="pestTypePieChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Area Chart: Crop Health -->
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fas fa-heartbeat"></i> Crop Health Trend</h3>
-                        <i class="fas fa-ellipsis-v" style="color: #ccc;"></i>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="healthAreaChart"></canvas>
-                    </div>
+                <div class="chart-wrapper">
+                    <canvas id="sprayBarChart"></canvas>
                 </div>
             </div>
-        </main>
+
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>Taxonomy Distribution</h3>
+                </div>
+                <div class="chart-wrapper" style="height: 300px;">
+                    <canvas id="pestTypePieChart"></canvas>
+                </div>
+            </div>
+
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>Vegetation Health Index</h3>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="healthAreaChart"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="analytics.js"></script>
