@@ -31,15 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const getBaseUrl = () => {
-        const h = window.location.hostname;
-        if (!h || h === 'localhost' || h === '127.0.0.1') return 'http://127.0.0.1:5000';
-        return `${window.location.protocol}//${h}:5000`;
-    };
 
     const fetchHistoricalData = async () => {
         try {
-            const res = await fetch(`${getBaseUrl()}/api/history`);
+            const res = await fetch(`/api/history`);
             if (res.ok) {
                 const data = await res.json();
                 if (Array.isArray(data) && data.length > 0) {

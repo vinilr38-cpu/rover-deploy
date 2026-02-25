@@ -31,15 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
         logTerminal.scrollTop = logTerminal.scrollHeight;
     };
 
-    const getBaseUrl = () => {
-        const h = window.location.hostname;
-        if (!h || h === 'localhost' || h === '127.0.0.1') return 'http://127.0.0.1:5000';
-        return `${window.location.protocol}//${h}:5000`;
-    };
 
     const fetchLogs = async () => {
         try {
-            const res = await fetch(`${getBaseUrl()}/api/logs`);
+            const res = await fetch(`/api/logs`);
             if (res.ok) {
                 const data = await res.json();
                 if (Array.isArray(data) && data.length > 0) {

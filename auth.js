@@ -14,14 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentMode = 'login';
 
-    // --- Helper: Get Backend Base URL ---
-    const getBaseUrl = () => {
-        const hostname = window.location.hostname;
-        if (!hostname || hostname === 'localhost' || hostname === '127.0.0.1') {
-            return 'http://127.0.0.1:5000';
-        }
-        return `${window.location.protocol}//${hostname}:5000`;
-    };
 
     // --- Helper: Show status message ---
     const showStatus = (msg, isError = true) => {
@@ -109,12 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.textContent = 'Processing...';
         submitBtn.disabled = true;
 
-        const baseUrl = getBaseUrl();
 
         try {
             if (currentMode === 'login') {
                 // ---- LOGIN ----
-                const res = await fetch(`${baseUrl}/api/login`, {
+                const res = await fetch(`/api/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -147,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     role: roleInput ? roleInput.value : 'farmer'
                 };
 
-                const res = await fetch(`${baseUrl}/api/signup`, {
+                const res = await fetch(`/api/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(signupData)
@@ -171,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Auth error:', error);
-            showStatus('Connection failed. Please ensure the backend server is running at ' + baseUrl);
+            showStatus('Connection failed. Please ensure the backend server is running.');
             submitBtn.textContent = currentMode === 'login' ? 'Login to System' : 'Register Now';
             submitBtn.disabled = false;
         }

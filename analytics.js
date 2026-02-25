@@ -15,14 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function initPestChart() {
         try {
-            const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                ? 'http://localhost:5000'
-                : `${window.location.protocol}//${window.location.hostname}:5000`;
-            const response = await fetch(`${baseUrl}/api/history`);
+            const response = await fetch(`/api/history`);
             const historyData = await response.json();
 
-            const labels = historyData.map(d => d.date);
-            const data = historyData.map(d => d.pest);
+            const labels = historyData.map(d => d.timestamp.split(' ')[1]).reverse();
+            const data = historyData.map(d => d.temperature).reverse();
 
             new Chart(pestCtx, {
                 type: 'line',

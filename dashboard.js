@@ -21,14 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ─────────────── DATA FETCHING ───────────────
-    const getBaseUrl = () => {
-        const h = window.location.hostname;
-        // Auto-detect backend port 5000 co-hosted with frontend
-        if (!h || h === 'localhost' || h === '127.0.0.1') return 'http://127.0.0.1:5000';
-        return `${window.location.protocol}//${h}:5000`;
-    };
-
-    const baseUrl = getBaseUrl();
     const loadingOverlay = document.getElementById('loading-overlay');
     const warning = document.getElementById('connection-warning');
 
@@ -111,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateDashboard = async () => {
         try {
             // Fetch live summary
-            const dataRes = await fetch(`${baseUrl}/api/data`);
+            const dataRes = await fetch(`/api/data`);
             if (dataRes.ok) {
                 const data = await dataRes.json();
                 if (tempEl) tempEl.innerText = data.temperature;
@@ -129,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Fetch history for graph
-            const histRes = await fetch(`${baseUrl}/api/history`);
+            const histRes = await fetch(`/api/history`);
             if (histRes.ok) {
                 const history = await histRes.json();
                 if (!sensorChart) {
@@ -148,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Role-based Access (Admin check)
-    const userRole = localStorage.getItem('userRole');
+    const userRole = localStorage.getItem('agrovision-role');
     const adminPanel = document.getElementById('admin-panel');
     if (userRole === 'admin' && adminPanel) {
         adminPanel.style.display = 'block';

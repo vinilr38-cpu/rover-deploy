@@ -35,10 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sync with Backend
     const fetchSprayStatus = async () => {
         try {
-            const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                ? 'http://localhost:5000'
-                : `${window.location.protocol}//${window.location.hostname}:5000`;
-            const response = await fetch(`${baseUrl}/api/data`);
+            const response = await fetch(`/api/data`);
             const data = await response.json();
 
             if (data.spray_status === 'ON' && !sprayOnBtn.classList.contains('active')) {
@@ -62,10 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateSprayOnBackend = async (status) => {
         try {
-            const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                ? 'http://localhost:5000'
-                : `${window.location.protocol}//${window.location.hostname}:5000`;
-            await fetch(`${baseUrl}/api/spray`, {
+            await fetch(`/api/spray`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: status })
