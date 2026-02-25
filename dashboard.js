@@ -9,6 +9,93 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Chart.js Initialization
+    let sensorChart;
+    const initChart = () => {
+        const ctx = document.getElementById('sensorChart').getContext('2d');
+        sensorChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Temperature (°C)',
+                        borderColor: '#f44336',
+                        backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                        data: [],
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Humidity (%)',
+                        borderColor: '#2196f3',
+                        backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                        data: [],
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Soil Moisture (%)',
+                        borderColor: '#4caf50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        data: [],
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        display: true,
+                        title: { display: true, text: 'Time' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    };
+
+    const updateChart = (timestamp, temp, humidity, soil) => {
+        if (!sensorChart) return;
+
+        const timeLabel = timestamp.split(' ')[1]; // Just show time H:M:S
+
+        sensorChart.data.labels.push(timeLabel);
+        sensorChart.data.datasets[0].data.push(temp);
+        sensorChart.data.datasets[1].data.push(humidity);
+        sensorChart.data.datasets[2].data.push(soil);
+
+        // Keep last 15 points
+        if (sensorChart.data.labels.length > 15) {
+            sensorChart.data.labels.shift();
+            sensorChart.data.datasets.forEach(dataset => dataset.data.shift());
+        }
+
+        sensorChart.update('none'); // Update without animation for performance
+    };
+
+    const fetchHistory = async () => {
+        try {
+            const baseUrl = `http://${window.location.hostname || 'localhost'}:5000`;
+            const response = await fetch(`${baseUrl}/api/history`);
+            if (response.ok) {
+                const history = await response.json();
+                // History comes in DESC order, reverse for chart
+                history.reverse().forEach(entry => {
+                    updateChart(entry.timestamp, entry.temperature, entry.humidity, entry.soil_moisture);
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching history:', error);
+        }
+    };
+
+    initChart();
+    fetchHistory();
+
     // System Health Monitoring from API
     const fetchSystemStatus = async () => {
         try {
@@ -79,20 +166,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const baseUrl = `http://${window.location.hostname || 'localhost'}:5000`;
+            // Update Temperature, Humidity, Soil Moisture from /api/sensor-data
+            const sensorResponse = await fetch(`${baseUrl}/api/sensor-data`);
+            if (sensorResponse.ok) {
+                const sensorData = await sensorResponse.json();
+                const tempEl = document.getElementById("temp");
+                const humEl = document.getElementById("humidity");
+                const soilEl = document.getElementById("soil");
+
+                if (tempEl) tempEl.innerText = sensorData.temperature;
+                if (humEl) humEl.innerText = sensorData.humidity;
+                if (soilEl) soilEl.innerText = sensorData.soil_moisture;
+
+                // Update the chart in real-time
+                updateChart(sensorData.timestamp, sensorData.temperature, sensorData.humidity, sensorData.soil_moisture);
+            }
+
+            // Update Other Dashboard Data
             const response = await fetch(`${baseUrl}/api/data`);
 
             if (!response.ok) throw new Error("Backend unreachable");
 
             const data = await response.json();
 
-            // Update Counters Directly
-            const tempEl = document.getElementById("temp");
-            const humEl = document.getElementById("humidity");
             const pestEl = document.getElementById("pest");
             const sprayEl = document.getElementById("spray");
 
-            if (tempEl) tempEl.innerText = data.temperature + "°C";
-            if (humEl) humEl.innerText = data.humidity + "%";
             if (pestEl) pestEl.innerText = data.pest_count;
             if (sprayEl) {
                 sprayEl.innerText = (data.spray_status === 'ON' ? 'Active' : 'Idle');

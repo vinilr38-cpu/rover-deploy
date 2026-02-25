@@ -1,12 +1,56 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import sqlite3
+from datetime import datetime
 import json
 import os
 import random
-import datetime
+from random import randint
 
 app = Flask(__name__)
 CORS(app)
+
+def init_db():
+    conn = sqlite3.connect("sensor.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS sensor_data (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            temperature INTEGER,
+            humidity INTEGER,
+            soil_moisture INTEGER,
+            timestamp TEXT
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+@app.route('/api/sensor-data', methods=['GET'])
+def sensor_data():
+    temperature = randint(20, 35)
+    humidity = randint(40, 80)
+    soil_moisture = randint(30, 70)
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    conn = sqlite3.connect("sensor.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO sensor_data (temperature, humidity, soil_moisture, timestamp)
+        VALUES (?, ?, ?, ?)
+    """, (temperature, humidity, soil_moisture, timestamp))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        "temperature": temperature,
+        "humidity": humidity,
+        "soil_moisture": soil_moisture,
+        "timestamp": timestamp
+    })
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), 'data.json')
 LOG_FILE = os.path.join(os.path.dirname(__file__), 'logs.json')
@@ -104,13 +148,32 @@ def login():
         })
     return jsonify({"status": "failed"})
 
-@app.route('/api/history')
-def history():
-    return jsonify([
-        {"date": "2026-02-20", "pest": 3},
-        {"date": "2026-02-21", "pest": 5},
-        {"date": "2026-02-22", "pest": 2}
-    ])
+@app.route('/api/history', methods=['GET'])
+def get_history():
+    conn = sqlite3.connect("sensor.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT temperature, humidity, soil_moisture, timestamp
+        FROM sensor_data
+        ORDER BY id DESC
+        LIMIT 10
+    """)
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    history = []
+
+    for row in rows:
+        history.append({
+            "temperature": row[0],
+            "humidity": row[1],
+            "soil_moisture": row[2],
+            "timestamp": row[3]
+        })
+
+    return jsonify(history)
 
 @app.route('/api/system-status')
 def system_status():
@@ -133,4 +196,5 @@ def get_logs():
     return jsonify(logs)
 
 if __name__ == '__main__':
+    init_db()
     app.run(host='0.0.0.0', port=5000)

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="dashboard-body">
@@ -162,7 +163,7 @@
                     <div class="stat-icon temp-icon"><i class="fas fa-thermometer-half"></i></div>
                     <div class="stat-details">
                         <p class="stat-label">Temperature</p>
-                        <h3 class="stat-value"><span id="temp" class="counter" data-target="28">0</span>°C</h3>
+                        <h2 class="stat-value">Temperature: <span id="temp">--</span> °C</h2>
                     </div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> 2.5%
@@ -174,22 +175,22 @@
                     <div class="stat-icon hum-icon"><i class="fas fa-tint"></i></div>
                     <div class="stat-details">
                         <p class="stat-label">Humidity</p>
-                        <h3 class="stat-value"><span id="humidity" class="counter" data-target="64">0</span>%</h3>
+                        <h2 class="stat-value">Humidity: <span id="humidity">--</span> %</h2>
                     </div>
                     <div class="stat-trend trend-down">
                         <i class="fas fa-arrow-down"></i> 1.2%
                     </div>
                 </div>
 
-                <!-- Pest Count -->
+                <!-- Soil Moisture (Replacing Pest for demo) -->
                 <div class="stat-card">
-                    <div class="stat-icon pest-icon"><i class="fas fa-bug"></i></div>
+                    <div class="stat-icon soil-icon"><i class="fas fa-seedling"></i></div>
                     <div class="stat-details">
-                        <p class="stat-label">Pest Detection</p>
-                        <h3 class="stat-value"><span id="pest" class="counter" data-target="12">0</span></h3>
+                        <p class="stat-label">Soil Moisture</p>
+                        <h2 class="stat-value">Soil Moisture: <span id="soil">--</span> %</h2>
                     </div>
                     <div class="stat-trend">
-                        Last 24h
+                        Optimal
                     </div>
                 </div>
 
@@ -226,6 +227,13 @@
                     </div>
                     <div class="stat-trend">
                         Uptime: 48h
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <h2>Sensor History</h2>
+                    <div class="chart-container">
+                        <canvas id="sensorChart" width="600" height="300"></canvas>
                     </div>
                 </div>
             </div>
@@ -297,6 +305,22 @@
     </div>
 
     <script src="dashboard.js"></script>
+    <script>
+        async function loadSensorData() {
+            const response = await fetch("http://127.0.0.1:5000/api/sensor-data");
+            const data = await response.json();
+
+            document.getElementById("temp").innerText = data.temperature;
+            document.getElementById("humidity").innerText = data.humidity;
+            document.getElementById("soil").innerText = data.soil_moisture;
+        }
+
+        // Load once
+        loadSensorData();
+
+        // Auto refresh every 5 seconds
+        setInterval(loadSensorData, 5000);
+    </script>
 </body>
 
 </html>
