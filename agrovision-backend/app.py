@@ -96,7 +96,7 @@ def log_event(action, mode="Manual", user="Farmer Vinil"):
             logs = []
     
     new_log = {
-        "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "action": action,
         "mode": mode,
         "user": user
@@ -118,7 +118,7 @@ def get_data():
     elif data["spray_status"] == "ON" and data["pest_count"] > 0:
         data["pest_count"] -= 1
 
-    data["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data["last_updated"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     save_data(data)
     return jsonify(data)
 
