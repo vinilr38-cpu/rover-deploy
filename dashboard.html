@@ -305,19 +305,7 @@
     </div>
 
     <script src="dashboard.js"></script>
-    <script>
-        async function loadSensorData() {
-            const response = await fetch("http://127.0.0.1:5000/api/sensor-data");
-            const data = await response.json();
-
-            document.getElementById("temp").innerText = data.temperature;
-            document.getElementById("humidity").innerText = data.humidity;
-            document.getElementById("soil").innerText = data.soil_moisture;
-        }
-
-        // Load once
-        loadSensorData();
-        <script src="dashboard.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 
 </html>
