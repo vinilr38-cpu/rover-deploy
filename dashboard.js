@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mobile Menu Toggle
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const sidebar = document.querySelector('.sidebar');
+    const farmSelector = document.getElementById('farm-selector');
 
     if (mobileMenuBtn) {
         mobileMenuBtn.addEventListener('click', () => {
@@ -12,7 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Chart.js Initialization
     let sensorChart;
     const initChart = () => {
-        const ctx = document.getElementById('sensorChart').getContext('2d');
+        const chartEl = document.getElementById('sensorChart');
+        if (!chartEl) return;
+        const ctx = chartEl.getContext('2d');
         sensorChart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -77,9 +80,17 @@ document.addEventListener('DOMContentLoaded', () => {
         sensorChart.update('none'); // Update without animation for performance
     };
 
+    const getBaseUrl = () => {
+        const hostname = window.location.hostname;
+        if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '') {
+            return 'http://localhost:5000';
+        }
+        return `${window.location.protocol}//${hostname}:5000`;
+    };
+
     const fetchHistory = async () => {
         try {
-            const baseUrl = `http://${window.location.hostname || 'localhost'}:5000`;
+            const baseUrl = getBaseUrl();
             const response = await fetch(`${baseUrl}/api/history`);
             if (response.ok) {
                 const history = await response.json();
@@ -99,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // System Health Monitoring from API
     const fetchSystemStatus = async () => {
         try {
-            const baseUrl = `http://${window.location.hostname || 'localhost'}:5000`;
+            const baseUrl = getBaseUrl();
             const response = await fetch(`${baseUrl}/api/system-status`);
             const status = await response.json();
 
@@ -164,8 +175,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById("loading-overlay");
         const lastUpdated = document.getElementById("last-updated");
 
+        const hideOverlay = () => {
+            if (overlay) {
+                overlay.style.opacity = "0";
+                setTimeout(() => { overlay.style.display = "none"; }, 300);
+            }
+        };
+
         try {
-            const baseUrl = `http://${window.location.hostname || 'localhost'}:5000`;
+            const baseUrl = getBaseUrl();
+
             // Update Temperature, Humidity, Soil Moisture from /api/sensor-data
             const sensorResponse = await fetch(`${baseUrl}/api/sensor-data`);
             if (sensorResponse.ok) {
@@ -203,18 +222,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 lastUpdated.innerText = data.last_updated;
             }
 
-            // Hide error UI
+            // Hide error UI and overlay
             if (warning) warning.style.display = "none";
-            if (overlay) {
-                overlay.style.opacity = "0";
-                setTimeout(() => { overlay.style.display = "none"; }, 300);
-            }
+            hideOverlay();
 
         } catch (error) {
             console.error('Error fetching dashboard data:', error);
 
-            // Show Connection Warning
+            // Show Connection Warning and DISMISS loading overlay so user isn't stuck
             if (warning) warning.style.display = "flex";
+            hideOverlay();
         }
     };
 

@@ -15,7 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function initPestChart() {
         try {
-            const baseUrl = `http://${window.location.hostname || 'localhost'}:5000`;
+            const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? 'http://localhost:5000'
+                : `${window.location.protocol}//${window.location.hostname}:5000`;
             const response = await fetch(`${baseUrl}/api/history`);
             const historyData = await response.json();
 

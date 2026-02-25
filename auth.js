@@ -85,7 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.disabled = true;
 
             if (currentMode === 'login') {
-                const baseUrl = `http://${window.location.hostname || 'localhost'}:5000`;
+                const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                    ? 'http://localhost:5000'
+                    : `${window.location.protocol}//${window.location.hostname}:5000`;
+
                 fetch(`${baseUrl}/api/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -99,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (data.status === 'success') {
                             localStorage.setItem('agrovision-role', data.role);
                             localStorage.setItem('agrovision-user', emailInput.value);
-                            alert(`Login successful! Role: ${data.role}. Redirecting to dashboard...`);
+                            alert(`Login successful! Redirecting to dashboard...`);
                             window.location.href = 'dashboard.html';
                         } else {
                             alert('Login failed! Invalid email or password.');
@@ -108,8 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     })
                     .catch(error => {
-                        document.getElementById("status").innerText = "Connection Lost";
                         console.error('Login error:', error);
+                        alert('Connection failed! Please ensure the backend server is running and accessible.');
                         submitBtn.textContent = 'Login to System';
                         submitBtn.disabled = false;
                     });
