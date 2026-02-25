@@ -107,15 +107,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (dataRes.ok) {
                 const data = await dataRes.json();
                 if (tempEl) tempEl.innerText = data.temperature;
-                if (humEl) humEl.innerText = data.humidity;
+                if (tempEl) tempEl.innerText = data.temperature + ' °C';
+                if (humEl) humEl.innerText = data.humidity + ' %';
                 if (soilEl) {
-                    soilEl.innerText = Math.round(data.soil_moisture);
+                    soilEl.innerText = Math.round(data.soil_moisture) + ' %';
 
                     // Irrigation Warning Logic
                     const alertBox = document.getElementById("alertBox");
                     if (data.soil_moisture < 35) {
                         soilEl.style.color = "red";
-                        if (alertBox) alertBox.innerText = "⚠ Soil moisture is low! Turn on irrigation.";
+                        if (alertBox) {
+                            alertBox.className = "alert-box";
+                            alertBox.innerText = "⚠ Soil moisture is low! Turn on irrigation.";
+                        }
 
                         // Prevent alert storm - only alert if it wasn't already low
                         if (!window.soilWasLow) {
@@ -124,7 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     } else {
                         soilEl.style.color = "";
-                        if (alertBox) alertBox.innerText = "";
+                        if (alertBox) {
+                            alertBox.innerText = "";
+                            alertBox.className = "";
+                        }
                         window.soilWasLow = false;
                     }
                 }
@@ -132,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (pestEl) pestEl.innerText = data.pest_count;
                 if (lastUpdEl) lastUpdEl.innerText = data.last_updated.split(' ')[1];
 
-                warning.style.display = 'none';
+                if (warning) warning.style.display = 'none';
                 if (loadingOverlay) loadingOverlay.style.opacity = '0';
                 setTimeout(() => { if (loadingOverlay) loadingOverlay.style.display = 'none'; }, 300);
             }
