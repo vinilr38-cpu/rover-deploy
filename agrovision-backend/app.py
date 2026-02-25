@@ -148,6 +148,19 @@ def login():
         })
     return jsonify({"status": "failed"})
 
+@app.route('/api/signup', methods=['POST'])
+def signup():
+    data = request.json
+    email = data.get("email")
+    password = data.get("password")
+    role = data.get("role", "farmer")
+
+    if email in users:
+        return jsonify({"status": "failed", "message": "User already exists"})
+
+    users[email] = {"password": password, "role": role}
+    return jsonify({"status": "success", "role": role})
+
 @app.route('/api/history', methods=['GET'])
 def get_history():
     conn = sqlite3.connect("sensor.db")

@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Form Submission
-    authForm.addEventListener('submit', (e) => {
+    authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         let isValid = true;
 
@@ -117,11 +117,31 @@ document.addEventListener('DOMContentLoaded', () => {
                         submitBtn.disabled = false;
                     });
             } else {
-                // Simulate signup for now
-                setTimeout(() => {
+                // Real Signup via Backend
+                const roleInput = document.getElementById('role');
+                const signupData = {
+                    email: emailInput.value,
+                    password: passwordInput.value,
+                    role: roleInput ? roleInput.value : 'farmer'
+                };
+
+                const response = await fetch(`${baseUrl}/api/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(signupData)
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    localStorage.setItem('agrovision-role', signupData.role);
+                    localStorage.setItem('agrovision-user', signupData.email);
+
                     alert('Registration successful! Redirecting to dashboard...');
                     window.location.href = 'dashboard.html';
-                }, 1500);
+                } else {
+                    statusEl.innerText = data.message || "Registration failed";
+                }
             }
         }
     });
