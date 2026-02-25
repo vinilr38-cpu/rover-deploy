@@ -58,7 +58,10 @@ def load_data():
     if os.path.exists(DATA_FILE):
         try:
             with open(DATA_FILE, 'r') as f:
-                return json.load(f)
+                data = json.load(f)
+                if "soil_moisture" not in data:
+                    data["soil_moisture"] = 45.0
+                return data
         except Exception:
             pass
     return {
@@ -67,6 +70,7 @@ def load_data():
         "pest_count":  3,
         "spray_status": "OFF",
         "crop_health": "Good",
+        "soil_moisture": 45,
         "last_updated": ""
     }
 
@@ -155,6 +159,7 @@ def get_data():
     data["humidity"]    = int(data["humidity"]) + random.randint(-1, 1)
     data["temperature"] = max(20, min(40, data["temperature"]))
     data["humidity"]    = max(30, min(90, data["humidity"]))
+    data["soil_moisture"] = max(10, min(100, data["soil_moisture"] + random.uniform(-0.5, 0.5)))
 
     if data["spray_status"] == "OFF" and random.random() < 0.05:
         data["pest_count"] += 1

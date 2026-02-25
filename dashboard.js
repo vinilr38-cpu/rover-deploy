@@ -108,12 +108,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await dataRes.json();
                 if (tempEl) tempEl.innerText = data.temperature;
                 if (humEl) humEl.innerText = data.humidity;
+                if (soilEl) {
+                    soilEl.innerText = Math.round(data.soil_moisture);
+
+                    // Irrigation Warning Logic
+                    const alertBox = document.getElementById("alertBox");
+                    if (data.soil_moisture < 35) {
+                        soilEl.style.color = "red";
+                        if (alertBox) alertBox.innerText = "⚠ Soil moisture is low! Turn on irrigation.";
+
+                        // Prevent alert storm - only alert if it wasn't already low
+                        if (!window.soilWasLow) {
+                            alert("⚠ Soil moisture is low! Irrigation required.");
+                            window.soilWasLow = true;
+                        }
+                    } else {
+                        soilEl.style.color = "";
+                        if (alertBox) alertBox.innerText = "";
+                        window.soilWasLow = false;
+                    }
+                }
                 if (sprayEl) sprayEl.innerText = data.spray_status;
                 if (pestEl) pestEl.innerText = data.pest_count;
                 if (lastUpdEl) lastUpdEl.innerText = data.last_updated.split(' ')[1];
-
-                // Demo soil moisture logic for UI
-                if (soilEl) soilEl.innerText = Math.floor(Math.random() * (70 - 45) + 45);
 
                 warning.style.display = 'none';
                 if (loadingOverlay) loadingOverlay.style.opacity = '0';

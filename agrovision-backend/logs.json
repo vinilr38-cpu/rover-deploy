@@ -1,5 +1,40 @@
 [
   {
+    "timestamp": "2026-02-25 16:32:31",
+    "level": "INFO",
+    "message": "AgroVision backend initialized"
+  },
+  {
+    "timestamp": "2026-02-25 16:32:30",
+    "level": "INFO",
+    "message": "AgroVision backend initialized"
+  },
+  {
+    "timestamp": "2026-02-25 16:32:21",
+    "level": "INFO",
+    "message": "AgroVision backend initialized"
+  },
+  {
+    "timestamp": "2026-02-25 16:31:39",
+    "level": "INFO",
+    "message": "AgroVision backend initialized"
+  },
+  {
+    "timestamp": "2026-02-25 16:31:38",
+    "level": "INFO",
+    "message": "AgroVision backend initialized"
+  },
+  {
+    "timestamp": "2026-02-25 16:31:30",
+    "level": "INFO",
+    "message": "AgroVision backend initialized"
+  },
+  {
+    "timestamp": "2026-02-25 16:28:51",
+    "level": "SUCCESS",
+    "message": "User logged in: farmer1@gmail.com"
+  },
+  {
     "timestamp": "2026-02-25 16:17:47",
     "level": "INFO",
     "message": "Spray system turned OFF"

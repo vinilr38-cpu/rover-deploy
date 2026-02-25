@@ -9,12 +9,67 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f4f6f9;
+        }
+
+        .header {
+            background: #2e7d32;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .card-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .alert-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #ffebee;
+            color: #c62828;
+            font-weight: bold;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -47,9 +102,9 @@
     </aside>
 
     <!-- Main Content -->
-    <div class="main-content">
+    <div class="main-content container">
         <!-- Dashboard Header -->
-        <header class="dashboard-header">
+        <header class="dashboard-header header">
             <div class="header-left">
                 <h2>Operational Insights</h2>
             </div>
@@ -86,37 +141,41 @@
             Backend Node Offline. Reconnecting...
         </div>
 
+        <!-- Warning Alert Box -->
+        <div id="alertBox" style="color:red; font-weight:bold; text-align:center; padding: 10px; font-size: 1.1rem;">
+        </div>
+
         <!-- High-Level Stats -->
-        <div class="stats-grid">
+        <div class="stats-grid card-container">
             <div class="stat-card primary-card">
                 <div class="stat-icon"><i class="fas fa-thermometer-half"></i></div>
-                <div class="stat-info">
+                <div class="stat-info card">
                     <span class="stat-label">Temperature</span>
-                    <h3 class="stat-value"><span id="temp">--</span>°C</h3>
+                    <h3 class="stat-value value"><span id="temp">--</span>°C</h3>
                     <div class="stat-change up"><i class="fas fa-caret-up"></i> 0.5%</div>
                 </div>
             </div>
             <div class="stat-card info-card">
                 <div class="stat-icon"><i class="fas fa-tint"></i></div>
-                <div class="stat-info">
+                <div class="stat-info card">
                     <span class="stat-label">Humidity</span>
-                    <h3 class="stat-value"><span id="humidity">--</span>%</h3>
+                    <h3 class="stat-value value"><span id="humidity">--</span>%</h3>
                     <div class="stat-change down"><i class="fas fa-caret-down"></i> 1.2%</div>
                 </div>
             </div>
             <div class="stat-card accent-card">
                 <div class="stat-icon"><i class="fas fa-seedling"></i></div>
-                <div class="stat-info">
+                <div class="stat-info card">
                     <span class="stat-label">Soil Moisture</span>
-                    <h3 class="stat-value"><span id="soil">--</span>%</h3>
+                    <h3 class="stat-value value"><span id="soil">--</span>%</h3>
                     <div class="stat-change up"><i class="fas fa-check"></i> Optimal</div>
                 </div>
             </div>
             <div class="stat-card danger-card">
                 <div class="stat-icon"><i class="fas fa-biohazard"></i></div>
-                <div class="stat-info">
+                <div class="stat-info card">
                     <span class="stat-label">Pest Pressure</span>
-                    <h3 class="stat-value"><span id="pest-count">0</span></h3>
+                    <h3 class="stat-value value"><span id="pest-count">0</span></h3>
                     <div class="stat-change up"><i class="fas fa-exclamation-triangle"></i> Watchlist</div>
                 </div>
             </div>
@@ -144,7 +203,7 @@
 
                 <div class="stat-card" style="margin-bottom: 20px; box-shadow: none; border-color: var(--border);">
                     <div class="stat-icon"><i class="fas fa-spray-can"></i></div>
-                    <div class="stat-info">
+                    <div class="stat-info card">
                         <span class="stat-label">Aerosol Actuator</span>
                         <h3 class="stat-value" id="spray">STANDBY</h3>
                     </div>
