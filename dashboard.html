@@ -9,71 +9,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: #f4f6f9;
-        }
-
-        .header {
-            background: #2e7d32;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 22px;
-        }
-
-        .container {
-            padding: 20px;
-        }
-
-        .card-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            flex: 1;
-            min-width: 200px;
-            text-align: center;
-        }
-
-        .card h3 {
-            margin: 0;
-            font-weight: 600;
-        }
-
-        .value {
-            font-size: 28px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .alert-box {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            background: #ffebee;
-            color: #c62828;
-            font-weight: bold;
-        }
-    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="dashboard-body">
+    <!-- Status Overlay -->
+    <div id="loading-overlay" class="glass"
+        style="position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; transition: opacity 0.4s ease;">
+        <div class="status-badge"><span class="status-dot"></span> Synchronizing Data...</div>
+    </div>
+
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
@@ -103,33 +54,98 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="header">
-            Smart Agriculture Monitoring System
-        </div>
+        <header class="dashboard-header">
+            <div class="header-left">
+                <span class="section-subtitle">Real-time Monitoring</span>
+                <h2>Operational <span class="gradient-text">Insights</span></h2>
+            </div>
+            <div class="header-right">
+                <div id="connection-warning" class="badge badge-danger" style="display:none; margin-right: 15px;">
+                    <i class="fas fa-exclamation-triangle"></i> Connectivity Issue
+                </div>
+                <button id="theme-toggle" class="icon-btn" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                    <span class="user-name">Admin</span>
+                </div>
+            </div>
+        </header>
 
-        <div class="container">
-            <div class="card-container">
-                <div class="card">
-                    <h3>Temperature</h3>
-                    <div class="value" id="temp">-- °C</div>
+        <div class="container-fluid">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card primary-card">
+                    <div class="stat-icon"><i class="fas fa-thermometer-half"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Temperature</span>
+                        <h3 class="stat-value" id="temp">--°C</h3>
+                        <div class="stat-change up"><i class="fas fa-caret-up"></i> Live Tracking</div>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <h3>Humidity</h3>
-                    <div class="value" id="humidity">-- %</div>
+                <div class="stat-card primary-card">
+                    <div class="stat-icon"><i class="fas fa-tint"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Humidity</span>
+                        <h3 class="stat-value" id="humidity">--%</h3>
+                        <div class="stat-change"><i class="fas fa-check-circle"></i> Optimal Range</div>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <h3>Soil Moisture</h3>
-                    <div class="value" id="soil">-- %</div>
+                <div class="stat-card primary-card">
+                    <div class="stat-icon"><i class="fas fa-seedling"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Soil Moisture</span>
+                        <h3 class="stat-value" id="soil">--%</h3>
+                        <div class="stat-change" id="soil-status">Scanning...</div>
+                    </div>
+                </div>
+
+                <div class="stat-card accent-card">
+                    <div class="stat-icon"><i class="fas fa-bug"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Pests Detected</span>
+                        <h3 class="stat-value" id="pest-count">0</h3>
+                        <div class="stat-change" id="last-updated">Updating...</div>
+                    </div>
                 </div>
             </div>
 
             <div id="alertBox"></div>
 
-            <h2 style="margin-top:40px;">Sensor History</h2>
-            <div class="chart-wrapper" style="height: 400px; position: relative;">
-                <canvas id="sensorChart"></canvas>
+            <!-- Charts Section -->
+            <div class="dashboard-widgets">
+                <div class="widget-card">
+                    <div class="widget-header">
+                        <h3>Environmental Flux</h3>
+                        <div class="badge badge-success">Live Analysis</div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="sensorChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="widget-card">
+                    <div class="widget-header">
+                        <h3>System Status</h3>
+                    </div>
+                    <div class="stat-info" style="margin-top: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <span>Sprayer Unit:</span>
+                            <span class="badge badge-success" id="spray">OFFLINE</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <span>Network Node:</span>
+                            <span class="badge badge-success">STABLE</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>AI Inference:</span>
+                            <span class="badge badge-success">ACTIVE</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

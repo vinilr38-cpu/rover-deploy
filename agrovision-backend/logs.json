@@ -1,5 +1,15 @@
 [
   {
+    "timestamp": "2026-02-26 22:15:15",
+    "level": "SUCCESS",
+    "message": "User logged in: farmer1@gmail.com"
+  },
+  {
+    "timestamp": "2026-02-26 22:14:02",
+    "level": "INFO",
+    "message": "New user registered: farmer1@gmail.com (farmer)"
+  },
+  {
     "timestamp": "2026-02-26 20:57:16",
     "level": "INFO",
     "message": "AgroVision backend starting via Waitress (Windowless)"
@@ -986,16 +996,6 @@
   },
   {
     "timestamp": "2026-02-25 21:13:20",
-    "level": "INFO",
-    "message": "AgroVision backend starting via Waitress"
-  },
-  {
-    "timestamp": "2026-02-25 21:13:19",
-    "level": "INFO",
-    "message": "AgroVision backend starting via Waitress"
-  },
-  {
-    "timestamp": "2026-02-25 21:13:18",
     "level": "INFO",
     "message": "AgroVision backend starting via Waitress"
   }

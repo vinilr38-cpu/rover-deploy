@@ -7,15 +7,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('agro-theme') === 'dark') body.classList.add('dark-mode');
 
     if (themeBtn) {
+        // Initial icon sync
+        const icon = themeBtn.querySelector('i');
+        if (icon) {
+            icon.className = body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
         themeBtn.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             const icon = themeBtn.querySelector('i');
-            if (body.classList.contains('dark-mode')) {
-                icon.className = 'fas fa-sun';
-                localStorage.setItem('agro-theme', 'dark');
-            } else {
-                icon.className = 'fas fa-moon';
-                localStorage.setItem('agro-theme', 'light');
+            if (icon) {
+                if (body.classList.contains('dark-mode')) {
+                    icon.className = 'fas fa-sun';
+                    localStorage.setItem('agro-theme', 'dark');
+                } else {
+                    icon.className = 'fas fa-moon';
+                    localStorage.setItem('agro-theme', 'light');
+                }
             }
         });
     }
@@ -56,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         label: 'Temperature (°C)',
                         data: temps,
                         borderColor: '#2e7d32',
-                        backgroundColor: 'rgba(46, 125, 50, 0.1)',
+                        backgroundColor: 'rgba(46, 125, 125, 0.1)',
                         tension: 0.4,
                         fill: true,
                         pointRadius: 4,
@@ -106,42 +114,58 @@ document.addEventListener('DOMContentLoaded', () => {
             const dataRes = await fetch(`/api/data`);
             if (dataRes.ok) {
                 const data = await dataRes.json();
-                if (tempEl) tempEl.innerText = data.temperature;
+
                 if (tempEl) tempEl.innerText = data.temperature + ' °C';
                 if (humEl) humEl.innerText = data.humidity + ' %';
+
                 if (soilEl) {
                     soilEl.innerText = Math.round(data.soil_moisture) + ' %';
 
                     // Irrigation Warning Logic
                     const alertBox = document.getElementById("alertBox");
+                    const soilStatus = document.getElementById("soil-status");
+
                     if (data.soil_moisture < 35) {
-                        soilEl.style.color = "red";
+                        soilEl.style.color = "var(--danger)";
+                        if (soilStatus) {
+                            soilStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Needs Water';
+                            soilStatus.className = 'stat-change down';
+                        }
                         if (alertBox) {
                             alertBox.className = "alert-box";
-                            alertBox.innerText = "⚠ Soil moisture is low! Turn on irrigation.";
-                        }
-
-                        // Prevent alert storm - only alert if it wasn't already low
-                        if (!window.soilWasLow) {
-                            alert("⚠ Soil moisture is low! Irrigation required.");
-                            window.soilWasLow = true;
+                            alertBox.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Soil moisture is critically low! Turn on irrigation.';
                         }
                     } else {
                         soilEl.style.color = "";
+                        if (soilStatus) {
+                            soilStatus.innerHTML = '<i class="fas fa-check-circle"></i> Healthy';
+                            soilStatus.className = 'stat-change up';
+                        }
                         if (alertBox) {
                             alertBox.innerText = "";
                             alertBox.className = "";
                         }
-                        window.soilWasLow = false;
                     }
                 }
-                if (sprayEl) sprayEl.innerText = data.spray_status;
+
+                if (sprayEl) {
+                    sprayEl.innerText = data.spray_status.toUpperCase();
+                    sprayEl.className = data.spray_status.toLowerCase() === 'active' ? 'badge badge-success' : 'badge badge-warning';
+                }
+
                 if (pestEl) pestEl.innerText = data.pest_count;
-                if (lastUpdEl) lastUpdEl.innerText = data.last_updated.split(' ')[1];
+                if (lastUpdEl) {
+                    const time = data.last_updated ? data.last_updated.split(' ')[1] : 'Just now';
+                    lastUpdEl.innerText = 'Sync: ' + time;
+                }
 
                 if (warning) warning.style.display = 'none';
-                if (loadingOverlay) loadingOverlay.style.opacity = '0';
-                setTimeout(() => { if (loadingOverlay) loadingOverlay.style.display = 'none'; }, 300);
+                if (loadingOverlay) {
+                    loadingOverlay.style.opacity = '0';
+                    setTimeout(() => { loadingOverlay.style.display = 'none'; }, 400);
+                }
+            } else {
+                throw new Error("API Response Error");
             }
 
             // Fetch history for graph
@@ -154,12 +178,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     sensorChart.data.labels = history.map(d => d.timestamp.split(' ')[1]).reverse();
                     sensorChart.data.datasets[0].data = history.map(d => d.temperature).reverse();
                     sensorChart.data.datasets[1].data = history.map(d => d.humidity).reverse();
-                    sensorChart.update('none'); // Update without animation for jitter-free live feel
+                    sensorChart.update('none');
                 }
             }
         } catch (err) {
             console.error('Backend connection failed:', err);
-            warning.style.display = 'flex';
+            if (warning) warning.style.display = 'flex';
         }
     };
 
