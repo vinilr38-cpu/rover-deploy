@@ -15,10 +15,10 @@ This script will:
 - Create a virtual environment (`.venv`)
 - Install all dependencies (`flask`, `waitress`, `flask-cors`)
 - Install PM2 globally
-- Start the backend in a windowless mode on **port 8080** (`pythonw.exe`)
+- Start the backend in a windowless mode on **port 80** (`pythonw.exe`)
 
 ## Management Commands
-Once deployed, the site is available at: **http://localhost:8080**
+Once deployed, the site is available at: **http://localhost**
 
 - **Check Status**: `pm2 status`
 - **View Logs**: `pm2 logs agrovision-backend`
